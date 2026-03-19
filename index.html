@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staff Induction Booklet Generator</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; color: #333; }
+
+  .app-header {
+    background: linear-gradient(135deg, #2e7d32, #388e3c);
+    color: white;
+    padding: 24px 32px;
+    text-align: center;
+  }
+  .app-header h1 { font-size: 28px; font-weight: 600; margin-bottom: 4px; }
+  .app-header p { font-size: 14px; opacity: 0.85; }
+
+  .container { max-width: 800px; margin: 24px auto; padding: 0 16px; }
+
+  .card {
+    background: white; border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 32px; margin-bottom: 24px;
+  }
+  .card h2 { color: #2e7d32; font-size: 20px; margin-bottom: 6px; border-bottom: 2px solid #2e7d32; padding-bottom: 8px; }
+  .card .subtitle { color: #666; font-size: 13px; margin-bottom: 20px; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .form-row.full { grid-template-columns: 1fr; }
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-weight: 600; font-size: 13px; color: #444; margin-bottom: 4px; }
+  .form-group input, .form-group select {
+    width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 6px;
+    font-size: 14px; font-family: inherit; transition: border-color 0.2s;
+  }
+  .form-group input:focus, .form-group select:focus {
+    outline: none; border-color: #2e7d32; box-shadow: 0 0 0 3px rgba(46,125,50,0.15);
+  }
+  .form-group .hint { font-size: 12px; color: #888; margin-top: 3px; }
+
+  .btn-row { display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px; flex-wrap: wrap; }
+  .btn { padding: 10px 24px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .btn-primary { background: #2e7d32; color: white; }
+  .btn-primary:hover { background: #1b5e20; }
+  .btn-download { background: #2e7d32; color: white; font-size: 16px; padding: 14px 32px; }
+  .btn-download:hover { background: #1b5e20; }
+  .btn-secondary { background: #e9ecef; color: #333; }
+  .btn-secondary:hover { background: #ddd; }
+
+  .required::after { content: ' *'; color: #dc3545; }
+
+  .preview-note {
+    background: #e8f5e9; border: 1px solid #a5d6a7; border-radius: 8px;
+    padding: 16px; margin-bottom: 20px; font-size: 13px; color: #2e7d32;
+  }
+  .preview-note strong { display: block; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <h1>Staff Induction Booklet Generator</h1>
+  <p>Buckreddan Care Centre &mdash; New Staff Induction Booklet</p>
+</div>
+
+<div class="container">
+
+  <div class="card">
+    <h2>Staff Details</h2>
+    <p class="subtitle">Enter the new staff member's details to generate a personalised induction booklet</p>
+
+    <div class="preview-note">
+      <strong>How this works</strong>
+      Enter the staff member's details below and click "Download as Word Document". The generator will produce a complete induction booklet &mdash; an exact copy of the Buckreddan Care Centre New Staff Induction Booklet &mdash; with the staff details filled in. All competency tables, sign-off spaces, and instructional text are included ready for printing.
+    </div>
+
+    <div class="form-row">
+      <div class="form-group"><label class="required">Staff Name</label><input type="text" id="staffName" placeholder="e.g. Jane Smith"></div>
+      <div class="form-group"><label class="required">Mentor</label><input type="text" id="mentorName" placeholder="e.g. Claire Robertson"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Start Date</label><input type="text" id="startDate" placeholder="e.g. 19/03/2026"></div>
+      <div class="form-group"><label>Completion Date</label><input type="text" id="completionDate" placeholder="e.g. 11/06/2026"></div>
+    </div>
+
+    <h2 style="margin-top:24px">Competency Sign-Off</h2>
+    <p class="subtitle">These details will be auto-filled into every competency table in the booklet</p>
+
+    <div class="form-row">
+      <div class="form-group"><label class="required">Assessor Initials</label><input type="text" id="assessorInitials" placeholder="e.g. mm" style="text-transform:lowercase"><div class="hint">The mentor/assessor's initials for all competency boxes</div></div>
+      <div class="form-group"><label>Carer Initials</label><input type="text" id="carerInitials" placeholder="e.g. js" style="text-transform:lowercase"><div class="hint">The carer/staff member's initials (optional)</div></div>
+    </div>
+    <div class="form-row" style="grid-template-columns: 1fr 1fr 1fr;">
+      <div class="form-group"><label class="required">Date 1 (Level 1)</label><input type="text" id="date1" placeholder="e.g. 18.10.25"><div class="hint">Date level 1 competency observed</div></div>
+      <div class="form-group"><label class="required">Date 2 (Level 2)</label><input type="text" id="date2" placeholder="e.g. 2.12.25"><div class="hint">Date level 2 competency achieved</div></div>
+      <div class="form-group"><label class="required">Date 3 (Level 3)</label><input type="text" id="date3" placeholder="e.g. 10.1.26"><div class="hint">Date level 3 competency achieved</div></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-download" onclick="downloadBooklet()">Download as Word Document</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function val(id) { return document.getElementById(id).value.trim(); }
+
+function downloadBooklet() {
+  const staffNameLine = val('staffName') ? esc(val('staffName')) : '______________________________';
+  const mentorLine = val('mentorName') ? esc(val('mentorName')) : '________________________________';
+  const startLine = val('startDate') ? esc(val('startDate')) : '_____________________________';
+  const completionLine = val('completionDate') ? esc(val('completionDate')) : '________________________';
+  const inductionStartLine = val('startDate') ? esc(val('startDate')) : '________________________________';
+  const inductionCompletionLine = val('completionDate') ? esc(val('completionDate')) : '__________________________';
+  const ai = esc(val('assessorInitials')) || '&nbsp;';
+  const ci = esc(val('carerInitials')) || '&nbsp;';
+  const d1 = esc(val('date1')) || '&nbsp;';
+  const d2 = esc(val('date2')) || '&nbsp;';
+  const d3 = esc(val('date3')) || '&nbsp;';
+
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head><meta charset="UTF-8">
+<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View></w:WordDocument></xml><![endif]-->
+<style>
+@page { size: A4 portrait; margin: 2cm 2.5cm; }
+body { font-family: 'Calibri', sans-serif; font-size: 11pt; color: #000; line-height: 1.4; }
+h1 { font-size: 22pt; font-weight: bold; text-align: center; margin-bottom: 6pt; }
+h2 { font-size: 14pt; font-weight: bold; margin-top: 14pt; margin-bottom: 6pt; }
+h3 { font-size: 12pt; font-weight: bold; margin-top: 10pt; margin-bottom: 4pt; }
+h4 { font-size: 11pt; font-weight: bold; margin-top: 8pt; margin-bottom: 4pt; }
+p { margin-bottom: 6pt; }
+.cover { text-align: center; page-break-after: always; }
+.cover h1 { font-size: 28pt; margin-top: 120pt; color: #000; }
+.cover h2 { font-size: 18pt; font-weight: normal; margin-bottom: 4pt; }
+.cover h3 { font-size: 14pt; font-weight: normal; }
+.cover .fields { text-align: left; margin: 60pt auto; width: 80%; font-size: 12pt; }
+.cover .fields p { margin-bottom: 18pt; }
+.toc { text-align: center; page-break-after: always; }
+.toc h2 { font-size: 16pt; margin-top: 80pt; margin-bottom: 30pt; text-transform: uppercase; }
+.toc .item { font-size: 13pt; margin-bottom: 14pt; text-transform: uppercase; }
+.toc .dates { margin-top: 40pt; text-align: left; width: 80%; margin-left: auto; margin-right: auto; }
+.toc .dates p { margin-bottom: 14pt; font-size: 12pt; }
+.pagebreak { page-break-before: always; }
+table { width: 100%; border-collapse: collapse; margin-bottom: 10pt; }
+table td, table th { border: 1px solid #000; padding: 4pt 6pt; font-size: 10pt; vertical-align: top; }
+table th { background: #d9e2f3; font-weight: bold; text-align: center; }
+.sig-line { margin-top: 16pt; margin-bottom: 6pt; }
+.note { font-style: italic; font-size: 10pt; margin-top: 6pt; }
+ul { margin-left: 24pt; margin-bottom: 8pt; }
+li { margin-bottom: 4pt; }
+.section-header { background: #d9e2f3; padding: 6pt 8pt; font-weight: bold; font-size: 11pt; border: 1px solid #000; margin-bottom: 0; }
+.comp-table td.desc { width: 55%; }
+.comp-table td.init { width: 11%; text-align: center; }
+.comp-table td.sig { width: 12%; }
+.blank-space { height: 100pt; border: 1px solid #ccc; margin-bottom: 10pt; }
+.blank-space-lg { height: 160pt; border: 1px solid #ccc; margin-bottom: 10pt; }
+</style>
+</head>
+<body>
+
+<!-- ==================== COVER PAGE ==================== -->
+<div class="cover">
+<h1>Buckreddan Care Centre</h1>
+<h2>New Staff Induction Booklet</h2>
+<h3>Care &amp; Administrative Practice</h3>
+<div class="fields">
+<p>Staff Name; ${staffNameLine}</p>
+<p>Mentor; ${mentorLine}</p>
+<p>Start Date; ${startLine}</p>
+<p>Completion Date; ${completionLine}</p>
+</div>
+</div>
+
+<!-- ==================== TABLE OF CONTENTS ==================== -->
+<div class="toc">
+<h2>Record of Induction</h2>
+<p class="item">Learning Through Practice</p>
+<p class="item">Safe Working Practice in Care</p>
+<p class="item">Essential Skills for Care Practice</p>
+<p class="item">Therapeutic Relationships</p>
+<div class="dates">
+<p>Induction Start Date;- ${inductionStartLine}</p>
+<p>Induction Completion Date;- ${inductionCompletionLine}</p>
+</div>
+</div>
+
+<!-- ==================== INFORMATION FOR MENTORS ==================== -->
+<div class="pagebreak">
+<h2>Information for Mentors</h2>
+<h3>Assessment Strategies</h3>
+<p>The following information has been written to help familiarise yourself with the Record of Achievement and the assessment strategies that have been adopted to assess new staff competence during their work practice.</p>
+<p>One of the most valuable indicators of a persons competence comes from the direct observation of practice by a senior staff member. The assessment used in this portfolio is competency based and the staff members are expected to achieve all competencies at level 3. Please refer to competency rating scale on page 8. During the assessment period the persons competency will be assessed in the following ways:-</p>
+<ul>
+<li>Direct Observation</li>
+<li>Questioning</li>
+<li>Discussion</li>
+</ul>
+<p>Supervision of practice</p>
+<p>The person will be assigned a mentor when starting employment. If there is no mentor available or becomes available during the induction period then the management must be informed as soon as possible.</p>
+<p>The mentor will be in a position to facilitate the carers learning and provide supervision and support throughout the induction period.</p>
+<p>The carer should be orientated to the department on the first day of employment and provided with the appropriate information relating to emergency procedures and Health and Safety policies, this should include the location of relevant policy and procedure manuals.</p>
+<p>The mentor should aim to meet with the carer a soon as possible to go through the requirements of the Record of Achievement together. This will ensure that both the carer and the mentor recognise the standard that has to be achieved by the carer and establish what the mentor can do to assist them to reach that standard. By doing this the mentor will be aware of the learning opportunities that need to be available to the carer in order that the competencies can be achieved.</p>
+
+<h3>6 Weekly Report</h3>
+<p>This formal report should be completed 6 weeks after the start of employment. It is especially important that the mentor should discuss this report with the carer. It is expected however, that in addition to this formal discussion there will be more regular, informal on-going weekly meetings with the carer to discuss their progress. Comments on performance should be recorded on this interim report sheet which is found within the Record of Achievement.</p>
+<p>Following the formal discussion the report should then be signed and dated by the mentor and the carer. This is especially important if it is anticipated that the carer will not achieve the required level of competence, or if there is concern about the carers professional behaviour, in which case the management should be contacted without delay.</p>
+
+<h3>Final Written Report</h3>
+<p>This must normally be completed 12 weeks after the start of employment. In order to complete this report it is suggested that you canvas other colleagues with whom the carer has been working and include their feedback when writing the report. This final written report gives the mentor the opportunity to comment on the carers professional standards, quality of performance, ability to work as part of the MDT and interaction with residents.</p>
+<p>In the event the carer does not achieve the specified competencies or demonstrates an unsatisfactory level of performance, you must inform the management. In this situation it is advised that you do not leave it until the final written report to inform the management of difficulties experienced by the carer but instead contact management when the issue first becomes apparent.</p>
+<p>The final report can be found at the end of the Record of Achievement.</p>
+</div>
+
+<!-- ==================== ORIENTATION PROGRAMME ==================== -->
+<div class="pagebreak">
+<h2>Orientation Programme</h2>
+<p>Please sign to confirm that you have advised the care of the following:</p>
+<ul>
+<li>Location of Policy and Procedure Manuals</li>
+<li>Layout of clinical area</li>
+<li>Emergency procedures</li>
+<li>Health and Safety Policies</li>
+</ul>
+<p class="sig-line">Mentor\u2019s Signature; ______________________ Date; ____________</p>
+<p class="sig-line">Carer\u2019s Signature; _______________________&nbsp;&nbsp; Date; ___________</p>
+<br>
+<p class="note">Anyone signing this Record of Achievement must PRINT their name and provide a sample signature in the section at the end of the document.</p>
+</div>
+
+<!-- ==================== CARERS GUIDE ==================== -->
+<div class="pagebreak">
+<h2>Carers Guide To Using This Portfolio</h2>
+<p>The competency portfolio will be used to guide your development and progress. The portfolio will enable you and your mentor to monitor and record your progress in developing your knowledge and skills.</p>
+<p>You and your mentor should read through the portfolio and become accustomed to the competencies contained within.</p>
+<p>During your assessment period your competency will be assesses in the following ways:-</p>
+<ul>
+<li>Direct observation</li>
+<li>Questioning</li>
+<li>Discussion</li>
+</ul>
+<p>During your induction period you are expected to have regular meetings with your mentor. These meetings are to enable you to review your level of ability with your mentor using the Competency Rating Scale. You should have an initial meeting with your mentor to fully review the portfolio and identify your current level of ability.</p>
+<p>Further meetings will be negotiated between yourself and your mentor. You are expected to meet on a monthly basis to review your progress. This must be recorded on the Initial and Interim Performance Review page.</p>
+<p>Each entry should be signed and dated by you and your mentor.</p>
+<p>Prior to your review meetings you should use the competency rating scale and assess your own level of competence against each of the competencies prior to meeting with your mentor. You should consider the evidence that you have to show that you are at the required level of competence.</p>
+<p>Your mentor must assess your level of competence in the same way and also consider the evidence that they have to confirm your level of competence.</p>
+<p>Your self-assessment and your mentor assessment should be undertaken independently and during your review meeting your level of competence should be agreed.</p>
+<p>At your review meeting you and your mentor should discuss and agree your level of competence.</p>
+<p>Full completion of the competency portfolio requires you and your mentor to have a formal meeting to confirm achievement of all competencies at Level 3. At the formal meeting you and your mentor should discuss and agree the final written report, using the relevant headings on page 8.</p>
+</div>
+
+<!-- ==================== COMPETENCY RATING SCALE ==================== -->
+<div class="pagebreak">
+<h2>Competency Rating Scale</h2>
+<p>In order to meet your learning needs and enable you to develop your knowledge and skills, the following rating scale is to be used when assessing your competencies.</p>
+<p>By the end of your induction period you are expected to have achieved competency Level 3.</p>
+<p>If you are experiencing any difficulties during induction it is advised that you seek help and guidance as soon as possible. This could be from your mentor or other suitable senior practitioner if your mentor is unavailable or the manager/deputy manager.</p>
+
+<table>
+<tr><th>LEVEL</th><th>Carer</th><th>Mentor</th></tr>
+<tr><td style="text-align:center;font-weight:bold">1</td><td>I have observed and had the theory explained to me.</td><td>The carer has observed this and had the theory explained to them.</td></tr>
+<tr><td style="text-align:center;font-weight:bold">2</td><td>I can participate and assist in this.</td><td>The carer is able to participate and assist in this.</td></tr>
+<tr><td style="text-align:center;font-weight:bold">3</td><td>I can link the theory to the practice and do this safely and competently with supervision.</td><td>The carer is able to link the theory to the practice and do this safely and competently with supervision.</td></tr>
+</table>
+</div>
+
+<!-- ==================== SECTION 1.0: PROFESSIONAL ATTRIBUTES ==================== -->
+<div class="pagebreak">
+<h2>1.0 Demonstrates effective working relationships and professional attributes through:</h2>
+
+<table>
+<tr><th colspan="2">Mentor to initial the box please</th><th colspan="3"></th></tr>
+<tr><th>Achieved?</th><th colspan="2">Yes</th><th>No</th><th>Date</th></tr>
+<tr><td>Professional appearance and attitude</td><td colspan="2">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Willingness to accept responsibility for their actions</td><td colspan="2">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Punctual</td><td colspan="2">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Respectful of colleagues</td><td colspan="2">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Truthful</td><td colspan="2">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Reliable</td><td colspan="2">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>A willingness to seek supervised practical experience to aid professional development</td><td colspan="2">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+
+<p style="text-align:right;font-size:10pt">Mentor initials</p>
+
+<h3>Demonstrate an understanding of regulation and accountability</h3>
+
+<table>
+<tr><th colspan="2">Mentor to initial the box please</th><th colspan="3"></th></tr>
+<tr><th>Achieved?</th><th colspan="2">Yes</th><th>No</th><th>Date</th></tr>
+<tr><td>Demonstrate a basic knowledge of professional regulation and self-regulation</td><td colspan="2">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Recognise and acknowledge the limitations of one\u2019s own abilities</td><td colspan="2">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Recognise situation that require referral to a registered practitioner</td><td colspan="2">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Participate in inter-professional teamwork and describe a situation where a multi professional approach was used to help meet the individual patient/client\u2019s needs</td><td colspan="2">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+
+<p style="text-align:right;font-size:10pt">Mentor initials</p>
+
+<h3>Understand methods of, barriers to and the boundaries of, effective communication and interpersonal relationships</h3>
+
+<table>
+<tr><th colspan="2">Mentor to initial the box please</th><th colspan="3"></th></tr>
+<tr><th>Achieved?</th><th colspan="2">Yes</th><th>No</th><th>Date</th></tr>
+<tr><td>Uses effective verbal communications and recognises barriers to communication</td><td colspan="2">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Utilises appropriate communications skills with individual residents</td><td colspan="2">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Acknowledge the boundaries of a professional caring relationship</td><td colspan="2">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Recognise the effect of one\u2019s own values on interactions with residents and their families and friends</td><td colspan="2">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+
+<p style="text-align:right;font-size:10pt">Mentor initials</p>
+
+<h3>Demonstrate sensitivity when interacting with and providing information and support to residents and families.</h3>
+
+<table>
+<tr><th colspan="2">Mentor to initial the box please</th><th colspan="3"></th></tr>
+<tr><th>Achieved?</th><th colspan="2">Yes</th><th>No</th><th>Date</th></tr>
+<tr><td>Contributes to measures to ensure the privacy and dignity of the individual resident</td><td colspan="2">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Understands the importance of resident/client empowerment and the need for the care worker to operate as an advocate for the individual resident in certain situations</td><td colspan="2">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Reflecting on and evaluating practice in developing and maintaining professional care relationships with individual residents</td><td colspan="2">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+
+<p style="text-align:right;font-size:10pt">Mentor Initials</p>
+</div>
+
+<!-- ==================== SECTION 2.0: ASSESSMENT, PLANNING & DELIVERY ==================== -->
+<div class="pagebreak">
+<h2>2.0 Assessment, Planning and Delivery of Care</h2>
+
+<table class="comp-table">
+<tr><th class="desc">&nbsp;</th><th colspan="3">Please Initial Each Box</th><th>&nbsp;</th></tr>
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Be aware of holistic care and the assessment strategies to guide the collection of data for assessing residents</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Contribute to the development of and documentation of health care assessments by using assessment tools under guidance.</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Collate documentation necessary for resident assessment e.g. admission, transfer, risk assessment, care charts &amp; filing.</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Participate in the assessment of identified residents as delegated by the registered practitioner, to obtain information that will inform future care planning &amp; delivery</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Record, report and/or relay information on individual needs &amp; preferences and/or changes, which will inform professional care planning &amp; decision making</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">(1) Identify care need based on the assessment of an individual</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">(2) Using the patients care plan, provide care to individuals which is responsive to beliefs &amp; preferences</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">(3) If unsure of entry in any documentation related to individual care, seek clarification from appropriate professional</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Consistently respond promptly to an individual\u2019s need/perceived need or pass request out with own ability to others</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Works as an effective &amp; efficient team member through ensuring effective time Management when delivering care &amp; reporting concerns to the registered practitioner</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Record, report and/or relay information on individual needs &amp; preference and/or changes, which will inform professional care planning &amp; decision making</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Safely deliver care to residents to a specified group as delegated by the senior carer</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Demonstrate an understanding of the role of others by participating in inter-professional working practice</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Identify the roles of the members of the health &amp; social care team</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Work within the health &amp; social care team to maintain &amp; enhance integrated care</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Demonstrate fairness &amp; sensitivity when responding to individuals/residents/groups from diverse circumstances, e.g. age appropriate care, disability, ethnicity, mental health issues &amp; gender</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Complete specific documents related to care delivery, which may be included in written reports by registered professionals e.g. fluid balance charts, food charts &amp; recording of weight</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Adhere to policy on confidentiality at all times when dealing with documentation</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Respect residents &amp; their families/carers dignity, wishes &amp; beliefs &amp; involve them in decisions about their care</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">When implementing the care plan, you Observe, record &amp; report to the appropriate People any significant changes to residents needs, circumstances &amp; preferences &amp; any risks that may arise from these changes</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+</div>
+
+<!-- ==================== SECTION 3.0: CARE SKILLS ==================== -->
+<div class="pagebreak">
+<h2>3.0 Demonstrate a range of care skills</h2>
+
+<table class="comp-table">
+<tr><th class="desc">&nbsp;</th><th colspan="3">Please Initial Each Box</th><th>&nbsp;</th></tr>
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Personal Care \u2013 dressing, undressing, immersion bath, shower, bed bath, skin care, eye care, mouth care, nail care, shaving, elimination needs and continence needs</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Eating &amp; drinking \u2013 use of adapted cutlery &amp; crockery, assisting individuals to eat &amp; drink, adhere to special dietary requirements, under guidance &amp; supervision use MUST assessment tool &amp; complete fluid intake/output charts</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Skin care. Use of appropriate assessment tools under supervision, use of pressure relieving devices &amp; pressure area care</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Contribute to pain management - recognise &amp; report individuals experiencing pain</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Adhere to infection control principles &amp; Local policies including, appropriate use of PPE Decontamination, correct disposal of contaminated items &amp; the demonstration of effective hand washing</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+</div>
+
+<!-- ==================== SECTION 4.0: HEALTH & SAFETY ==================== -->
+<div class="pagebreak">
+<h2>4.0 Health &amp; Safety</h2>
+
+<table class="comp-table">
+<tr><th class="desc">&nbsp;</th><th colspan="3">Please Initial Each Box</th><th>&nbsp;</th></tr>
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Ensure personal whereabouts is known to the appropriate person (people) at all times &amp; understand the importance of this in relation to Health &amp; Safety</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Access information on the Health &amp; Safety at Work Act 1974 &amp; associated legislation &amp; discuss its relevance to any persons or incidents at work</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">(3) Act responsibly at all times to ensure own Health &amp; Safety &amp; that of others e.g. individuals in your care, colleagues &amp; visitors</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">(4) Co-operate with any provision made by the organisation towards achieving health &amp; safety policy objectives, while complying with statutory duties</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">(5) Make full &amp; proper use of any control measures, personal protective equipment or other facilities provided to reduce or eliminate risks to health &amp; safety</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Take appropriate &amp; prompt action on discovering potential risks to health &amp; safety</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Discuss how new information or changes in health &amp; safety matters are made known &amp; Accessed accordingly (including Safety Action Notices)</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Demonstrate an understanding of responsibilities relating to Control of Substances hazardous to Health Regulations (COSHH) 2002</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Deal with accidents/spillages of material following guidelines within the COSHH assessments, when safe to do so</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Contribute to the identification of actual &amp; potential risks to residents &amp; their families to oneself &amp; to others &amp; participate in measures to promote health &amp; safety</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Demonstrate behaviour that conforms to health &amp; safety principles, policies &amp; procedures prior to, during &amp; after care delivery<br><b>Manual Handling</b></td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Demonstrate behaviour that conforms to health &amp; safety principles, policies &amp; procedures prior to, during &amp; after care delivery<br><b>Infection Control</b></td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Demonstrate behaviour that conforms to health &amp; safety principles, policies &amp; procedures prior to, during &amp; after care delivery<br><b>Fire Safety</b></td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">Demonstrate behaviour that conforms to health &amp; safety principles, policies &amp; procedures prior to, during &amp; after care delivery<br><b>Electrical Safety</b></td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+</div>
+
+<!-- ==================== SECTION 5.0: COMMUNICATION SKILLS ==================== -->
+<div class="pagebreak">
+<h2>5.0 Communication Skills</h2>
+<p>The carer will communicate effectively with the Health Care Team, Administration Staff, Multidisciplinary Team, Residents &amp; their families</p>
+
+<table class="comp-table">
+<tr><th class="desc">&nbsp;</th><th colspan="3">Please Initial Each Box</th><th>&nbsp;</th></tr>
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">(1) Communicates effectively with residents &amp; those involved in their care</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">(2) Recognises &amp; reflects on barriers to communication &amp; modifies response &amp;/or gains assistance when interacting with residents &amp; their families, e.g. hearing/other sensory impairment, or if English is not a first language</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">(3) Communicates relevant &amp; appropriate information to the multidisciplinary team &amp;/or Other internal/external agencies</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">(4) Maintains organisational standards/local Practices which relate to telephone calls Responses/on-going messages</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">(5) Demonstrates the importance of compassion Empathy, caring, touch &amp; spending time with the residents when developing therapeutic relationships</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">(6) Demonstrates the importance of the therapeutic relationship in promoting positive &amp; effective care for the individual</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<h4>NON-VERBAL</h4>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">(7) Demonstrate knowledge &amp; understanding of the effect of non-verbal cues on interactions with residents &amp; families</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">(8) Acts upon non-verbal cues during interactions with residents, their families &amp; others</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<h4>WRITTEN</h4>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">(9) Identifies legal, organisational &amp; inter-agency policies &amp; protocols for recording &amp; reporting</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">(10) Ensure where possible &amp; feasible that the resident &amp;/or their family are actively involved in the decision making process related to their nursing care</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">(11) Adheres to legislation/protocols on the inputting, retrieval &amp; storing of information in electronic databases, patient information systems &amp; written patient records, ensuring that confidentiality is maintained at all times</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">(12) Be familiar with the IT systems used by the care provider</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="desc">Occasion</th><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">Initials</th></tr>
+<tr><td rowspan="3">(13) Appropriately refers communication issues to the registered practitioner</td><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<p class="sig-line">Competency Achieved \u2013 Date ______________________________</p>
+<p class="sig-line">Carers Signature _________________________________________</p>
+<p class="sig-line">Mentors Signature ________________________________________</p>
+</div>
+
+<!-- ==================== DOMAIN 1: PROFESSIONAL VALUES ==================== -->
+<div class="pagebreak">
+<h2>PROFESSIONAL</h2>
+<h3>Domain 1 &mdash; VALUES:</h3>
+
+<table>
+<tr><th>&nbsp;</th><th>Mentor Signature:</th><th colspan="2">Date:</th></tr>
+<tr><th>&nbsp;</th><th>ACHIEVED</th><th>NOT ACHIEVED</th><th>&nbsp;</th></tr>
+<tr><td>Demonstrates an understanding of how culture, religion, spiritual beliefs, gender &amp; sexuality can impact on illness &amp; disability</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Respect people\u2019s rights</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Adopt a principled approach to care underpinned by the code (SSSC)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Provides person centred care that addresses both physical &amp; emotional needs &amp; preferences</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Shares information with colleagues &amp; seeks advice from appropriate sources where there is a concern or uncertainty</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Accepts delegated activities within limitations of own role, knowledge &amp; skills</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+
+<h2>COMMUNICATION AND</h2>
+<h3>Domain 2 &mdash; INTERPERSONAL SKILLS:</h3>
+
+<table>
+<tr><th>&nbsp;</th><th>Mentor Signature:</th><th colspan="2">Date:</th></tr>
+<tr><th>&nbsp;</th><th>ACHIEVED</th><th>NOT ACHIEVED</th><th>&nbsp;</th></tr>
+<tr><td>Evaluates ways in which own interactions affect relationships to ensure that they do not impact inappropriately on other</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Responds in ways that confirms what a person is communicating</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+</div>
+
+<!-- ==================== CLINICAL SKILLS: MONITORING & RECORDING FLUID BALANCE ==================== -->
+<div class="pagebreak">
+<h2>Monitoring &amp; Recording Fluid Balance</h2>
+
+<table class="comp-table">
+<tr><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">&nbsp;</th></tr>
+<tr><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">&nbsp;</th></tr>
+<tr><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">&nbsp;</th></tr>
+<tr><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">&nbsp;</th></tr>
+<tr><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">&nbsp;</th></tr>
+<tr><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">&nbsp;</th></tr>
+<tr><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+</div>
+
+<!-- ==================== CLINICAL SKILLS: SPECIMEN COLLECTION ==================== -->
+<div class="pagebreak">
+<h2>Specimen Collection</h2>
+<p>The range of specimens referred to in this competency should directly relate to the carers area of work. Carers should only participate in their collection if they have been advised to do so by a Registered Nurse or a member of Medical Staff</p>
+
+<table class="comp-table">
+<tr><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">&nbsp;</th></tr>
+<tr><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">&nbsp;</th></tr>
+<tr><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">&nbsp;</th></tr>
+<tr><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">&nbsp;</th></tr>
+<tr><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table class="comp-table">
+<tr><th class="init">1</th><th class="init">2</th><th class="init">3</th><th class="sig">&nbsp;</th></tr>
+<tr><td>${ci}</td><td>${ci}</td><td>${ci}</td><td>Carer</td></tr><tr><td>${ai}</td><td>${ai}</td><td>${ai}</td><td>Assessor</td></tr><tr><td>${d1}</td><td>${d2}</td><td>${d3}</td><td>Date</td></tr>
+</table>
+
+<table>
+<tr><th>DATE</th><th>Please write in what type of specimens you are involved in collecting:</th></tr>
+<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+</div>
+
+<!-- ==================== NUTRITION ==================== -->
+<div class="pagebreak">
+<h2>Nutrition</h2>
+
+<table>
+<tr><th>&nbsp;</th><th>Mentor Signature:</th><th>&nbsp;</th><th>&nbsp;</th></tr>
+<tr><th>&nbsp;</th><th>ACHIEVED</th><th>NOT ACHIEVED</th><th>DATE</th></tr>
+<tr><td>Use of safe food handling procedures/food hygiene</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Assist resident to make appropriate food choices</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Assist resident with eating &amp; drinking</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Adhere to individual nutritional needs as detailed in care plan</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Accurate completion of fluid intake/output documentation</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Make appropriate provision for residents who miss a meal for any reason</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Nutrition assessment tools \u2013 MUST</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Awareness of nutritional supplements</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+
+<h2>Elimination and Continence Management</h2>
+
+<table>
+<tr><th>&nbsp;</th><th>Mentor Signature:</th><th>&nbsp;</th><th>&nbsp;</th></tr>
+<tr><th>&nbsp;</th><th>ACHIEVED</th><th>NOT ACHIEVED</th><th>DATE</th></tr>
+<tr><td>Assessment and promotion of continence</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Aware of aids available</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Urinary catheter care</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Changing of catheter bags</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Use of personal protection equipment</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Safe disposal of: Clinical waste<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Non Clinical Waste</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+
+<h2>Pressure Area Prevention Treatment</h2>
+
+<table>
+<tr><th>&nbsp;</th><th>Mentor Signature:</th><th>&nbsp;</th><th>&nbsp;</th></tr>
+<tr><th>&nbsp;</th><th>ACHIEVED</th><th>NOT ACHIEVED</th><th>DATE</th></tr>
+<tr><td>Observation, monitoring of skin &amp; reporting of findings</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Use of pressure relieving devices &amp; techniques</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Use of pressure assessment tools</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Patient positioning</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>Awareness of local policy, protocols &amp; national guidelines</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+</div>
+
+<!-- ==================== INITIAL INDUCTION AGREEMENT ==================== -->
+<div class="pagebreak">
+<h2>INITIAL INDUCTION AGREEMENT</h2>
+
+<table>
+<tr><td colspan="2"><b>Mentor &amp; carer to discuss appropriate learning opportunities within clinical area &amp; complete agreement in Week 1 of induction</b></td></tr>
+<tr><td colspan="2">Initial Meeting :</td></tr>
+<tr><td colspan="2">SSSC registration complete:</td></tr>
+<tr><td colspan="2">Absence policy reviewed:</td></tr>
+<tr><td colspan="2">Policy on mobile phones:</td></tr>
+<tr><td>Mentors Signature:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:</td><td>&nbsp;</td></tr>
+<tr><td>Carers Signature:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:</td><td>&nbsp;</td></tr>
+</table>
+
+<h2>INTERIM INDUCTION ASSESSMENT</h2>
+
+<table>
+<tr><td colspan="2"><b>Interim assessment should be completed midway through the carer\u2019s induction</b></td></tr>
+<tr><td colspan="2">Mentor Comments:<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></td></tr>
+<tr><td colspan="2">Carer\u2019s Comments:</td></tr>
+<tr><td>Mentors Signature:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:</td><td>&nbsp;</td></tr>
+<tr><td>Carers Signature:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:</td><td>&nbsp;</td></tr>
+</table>
+</div>
+
+<!-- ==================== FINAL INDUCTION ASSESSMENT ==================== -->
+<div class="pagebreak">
+<h2>FINAL INDUCTION ASSESSMENT</h2>
+
+<table>
+<tr><td colspan="2"><b>Final assessment should be completed in the last 1 \u2013 2 weeks of the carer\u2019s induction</b></td></tr>
+<tr><td colspan="2">Mentor Comments:<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></td></tr>
+<tr><td colspan="2">Carer\u2019s Comments:</td></tr>
+<tr><td>Mentors Signature:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:</td><td>&nbsp;</td></tr>
+<tr><td>Carers Signature:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:</td><td>&nbsp;</td></tr>
+</table>
+
+<h2>CARER REFLECTION SHEET: INDUCTION</h2>
+
+<p>You are encouraged to reflect upon your overall experience in each placement by thinking about the following:-</p>
+
+<p><b>What learning experiences have I managed to achieve in this placement?</b></p>
+<div class="blank-space">&nbsp;</div>
+
+<p><b>Are there any learning experiences which I was unable to achieve &amp; why?</b></p>
+<div class="blank-space">&nbsp;</div>
+
+<p><b>What were my strengths or weaknesses whilst in this placement?</b></p>
+<div class="blank-space">&nbsp;</div>
+
+<p><b>My development needs for future practice are:</b></p>
+<div class="blank-space">&nbsp;</div>
+</div>
+
+</body></html>`;
+
+  const blob = new Blob([html], { type: 'application/msword' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const filename = val('staffName') ? val('staffName') + ' - Induction Booklet.doc' : 'Staff Induction Booklet.doc';
+  a.download = filename.replace(/[^a-zA-Z0-9 \-\.]/g, '');
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
+
+</body>
+</html>
