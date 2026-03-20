@@ -900,7 +900,7 @@ function fillDomainTable(xml, sectionMarker, mentorInitials, completionDate, isF
   // Find the nearest <w:tbl> containing ACHIEVED after the marker
   // The marker may be in a heading table, with the ACHIEVED table being the next one
   let tblStart = -1, tblEnd = -1;
-  let searchFrom = Math.max(0, markerIdx - 500);
+  let searchFrom = Math.max(0, markerIdx - 2000);
   while (searchFrom < xml.length && searchFrom < markerIdx + 10000) {
     const nextTbl = xml.indexOf('<w:tbl>', searchFrom);
     if (nextTbl === -1 || nextTbl > markerIdx + 10000) break;
