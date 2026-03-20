@@ -609,62 +609,33 @@ async function downloadBooklet() {
 
     let docXml = await docXmlFile.async('string');
 
-    // Replace the placeholder fields in the XML
-    // The original has text like: Staff Name; ______________________________
-    // We need to find these patterns within <w:t> tags and replace the underscores
+    // Replace placeholder fields in the XML
+    // Text is split across <w:t> tags: "Staff Name" + ":" + " ______"
+    // So we find the <w:t> containing underscores AFTER each label and replace
 
-    // Staff Name field
-    if (staffName) {
-      docXml = docXml.replace(
-        /Staff Name; _{10,}/g,
-        'Staff Name; ' + escapeXml(staffName)
-      );
+    // Helper: find a label in XML, then replace the next underscore-only <w:t> with the value
+    function replaceFieldAfterLabel(xml, label, value) {
+      if (!value) return xml;
+      var idx = xml.indexOf(label);
+      if (idx === -1) return xml;
+      // Find the next <w:t> tag that contains mostly underscores (the placeholder)
+      var searchRegion = xml.substring(idx, Math.min(xml.length, idx + 2000));
+      var replaced = searchRegion.replace(/>\s*_{5,}\s*<\/w:t>/, '>' + escapeXml(value) + '</w:t>');
+      if (replaced !== searchRegion) {
+        xml = xml.substring(0, idx) + replaced + xml.substring(idx + searchRegion.length);
+      }
+      return xml;
     }
 
-    // Mentor field
-    if (mentorName) {
-      docXml = docXml.replace(
-        /Mentor; _{10,}/g,
-        'Mentor; ' + escapeXml(mentorName)
-      );
-    }
+    // Cover page fields
+    docXml = replaceFieldAfterLabel(docXml, 'Staff Name', staffName);
+    docXml = replaceFieldAfterLabel(docXml, '>Mentor<', mentorName);
+    docXml = replaceFieldAfterLabel(docXml, 'Start Date', startDate);
+    docXml = replaceFieldAfterLabel(docXml, 'Completion Date', completionDate);
 
-    // Start Date field
-    if (startDate) {
-      docXml = docXml.replace(
-        /Start Date; _{10,}/g,
-        'Start Date; ' + escapeXml(startDate)
-      );
-    }
-
-    // Completion Date field
-    if (completionDate) {
-      docXml = docXml.replace(
-        /Completion Date; _{10,}/g,
-        'Completion Date; ' + escapeXml(completionDate)
-      );
-    }
-
-    // Induction Start Date field
-    if (startDate) {
-      docXml = docXml.replace(
-        /Induction Start Date;-?\s*_{10,}/g,
-        'Induction Start Date;- ' + escapeXml(startDate)
-      );
-      // Also handle the case where the text might be split across runs
-      docXml = docXml.replace(
-        / _{20,}(<\/w:t><\/w:r><\/w:p>)/g,
-        ' ' + escapeXml(startDate) + '$1'
-      );
-    }
-
-    // Induction Completion Date field
-    if (completionDate) {
-      docXml = docXml.replace(
-        /Induction Completion Date;-?\s*_{10,}/g,
-        'Induction Completion Date;- ' + escapeXml(completionDate)
-      );
-    }
+    // Induction dates (on TOC page) - find after "Induction Start Date"
+    docXml = replaceFieldAfterLabel(docXml, 'Induction Start Date', startDate);
+    docXml = replaceFieldAfterLabel(docXml, 'Induction Completion Date', completionDate);
 
     // Build mentor initials from name
     const mentorInits = mentorName ? mentorName.split(/\s+/).map(w => w[0]).join('').toUpperCase() : '';
