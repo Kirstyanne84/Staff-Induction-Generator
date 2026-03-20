@@ -629,8 +629,8 @@ async function downloadBooklet() {
 
     // Cover page fields
     docXml = replaceFieldAfterLabel(docXml, 'Staff Name', staffName);
-    docXml = replaceFieldAfterLabel(docXml, '>Mentor<', mentorName);
-    docXml = replaceFieldAfterLabel(docXml, 'Start Date', startDate);
+    docXml = replaceFieldAfterLabel(docXml, '>Mentor</w:t>', mentorName);
+    docXml = replaceFieldAfterLabel(docXml, '>Start Date<', startDate);
     docXml = replaceFieldAfterLabel(docXml, 'Completion Date', completionDate);
 
     // Induction dates (on TOC page) - find after "Induction Start Date"
@@ -901,9 +901,9 @@ function fillDomainTable(xml, sectionMarker, mentorInitials, completionDate, isF
   // The marker may be in a heading table, with the ACHIEVED table being the next one
   let tblStart = -1, tblEnd = -1;
   let searchFrom = Math.max(0, markerIdx - 500);
-  while (searchFrom < xml.length && searchFrom < markerIdx + 5000) {
+  while (searchFrom < xml.length && searchFrom < markerIdx + 10000) {
     const nextTbl = xml.indexOf('<w:tbl>', searchFrom);
-    if (nextTbl === -1 || nextTbl > markerIdx + 5000) break;
+    if (nextTbl === -1 || nextTbl > markerIdx + 10000) break;
     const nextTblEnd = xml.indexOf('</w:tbl>', nextTbl);
     if (nextTblEnd === -1) break;
     const tblContent = xml.substring(nextTbl, nextTblEnd + 8);
@@ -1062,12 +1062,12 @@ function insertCommentAfterLabel(xml, label, comment, sectionTitle, isCarerComme
   if (isCarerComment) {
     // Find "Carer" after the section, then "Comments:" after that
     const carerIdx = xml.indexOf('Carer', searchFrom + (sectionTitle ? sectionTitle.length : 0));
-    if (carerIdx === -1 || carerIdx > searchFrom + 20000) return xml;
+    if (carerIdx === -1 || carerIdx > searchFrom + 30000) return xml;
     labelIdx = xml.indexOf('Comments:', carerIdx);
     if (labelIdx === -1 || labelIdx > carerIdx + 200) return xml;
   } else {
     labelIdx = xml.indexOf(label, searchFrom);
-    if (labelIdx === -1 || labelIdx > searchFrom + 20000) return xml;
+    if (labelIdx === -1 || labelIdx > searchFrom + 30000) return xml;
   }
 
   // Find the end of the paragraph containing the label
