@@ -1525,7 +1525,18 @@ function rtfEscape(str) {
 }
 
 function insertRtfCellValue(rtf, label, value) {
-  // RTF table: "Label\cell }
+  // RTF table: find the label, then find \cell after it (label cell end),
+  // then find the next \cell (value cell end), insert text before it
+  var labelIdx = rtf.indexOf(label);
+  if (labelIdx === -1) return rtf;
+  var labelCellEnd = rtf.indexOf('\cell', labelIdx + label.length);
+  if (labelCellEnd === -1) return rtf;
+  var nextCellEnd = rtf.indexOf('\cell', labelCellEnd + 5);
+  if (nextCellEnd === -1) return rtf;
+  var rtfValue = rtfEscape(value);
+  rtf = rtf.substring(0, nextCellEnd) + rtfValue + rtf.substring(nextCellEnd);
+  return rtf;
+}
 
 function insertRtfAfterQuestion(rtf, questionFragment, answer) {
   var idx = rtf.indexOf(questionFragment);
@@ -1554,26 +1565,6 @@ function fillRtfSigDate(rtf, role, date) {
   return rtf;
 }
 
-{formatting \trowd...}{...}\cell"
-  // Find the label, then find \cell after it (label cell end),
-  // then find the next \cell (value cell end), insert text before it
-  var labelIdx = rtf.indexOf(label);
-  if (labelIdx === -1) return rtf;
-
-  // Find "\cell" after the label (ends the label cell)
-  var labelCellEnd = rtf.indexOf('\\cell', labelIdx + label.length);
-  if (labelCellEnd === -1) return rtf;
-
-  // Find the next "\cell" (ends the value cell)
-  var nextCellEnd = rtf.indexOf('\\cell', labelCellEnd + 5);
-  if (nextCellEnd === -1) return rtf;
-
-  // Insert text before this \cell
-  var rtfValue = rtfEscape(value);
-  rtf = rtf.substring(0, nextCellEnd) + rtfValue + rtf.substring(nextCellEnd);
-
-  return rtf;
-}
 
 </script>
 
