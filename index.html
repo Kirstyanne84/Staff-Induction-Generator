@@ -245,6 +245,11 @@
       <textarea id="finalMentorComments" rows="3" placeholder="e.g. All competencies achieved at Level 3, professional and reliable..." style="width:100%; padding:10px 12px; border:1px solid #ccc; border-radius:6px; font-size:14px; font-family:inherit; resize:vertical;"></textarea>
     </div>
 
+    <div class="form-group">
+      <label>My Action Plan for Future Practice</label>
+      <textarea id="actionPlan" rows="3" placeholder="e.g. Continue developing skills in..." style="width:100%; padding:10px 12px; border:1px solid #ccc; border-radius:6px; font-size:14px; font-family:inherit; resize:vertical;"></textarea>
+    </div>
+
     <div id="statusMsg" class="status"></div>
 
     <div class="btn-row">
@@ -698,6 +703,12 @@ async function downloadBooklet() {
     if (finalMentorComments) {
       docXml = insertCommentAfterLabel(docXml, 'Mentor Comments:', finalMentorComments, 'FINAL INDUCTION ASSESSMENT', false, 24);
     }
+    // ─── ACTION PLAN ───
+    const actionPlan = document.getElementById('actionPlan').value.trim();
+    if (actionPlan) {
+      docXml = insertCommentAfterLabel(docXml, 'My action plan for future practice:', actionPlan, null, false, 24);
+    }
+
     // Save the modified XML back
     zip.file('word/document.xml', docXml);
 
