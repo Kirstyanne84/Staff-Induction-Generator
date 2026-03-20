@@ -1067,7 +1067,8 @@ function insertCommentAfterLabel(xml, label, comment, sectionTitle, isCarerComme
     if (labelIdx === -1 || labelIdx > carerIdx + 200) return xml;
   } else {
     labelIdx = xml.indexOf(label, searchFrom);
-    if (labelIdx === -1 || labelIdx > searchFrom + 30000) return xml;
+    if (labelIdx === -1) return xml;
+    if (sectionTitle && labelIdx > searchFrom + 30000) return xml;
   }
 
   // Find the end of the paragraph containing the label
