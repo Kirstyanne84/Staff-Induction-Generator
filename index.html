@@ -119,6 +119,17 @@
 
   .fail-check { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #444; padding: 4px 0; cursor: pointer; }
   .fail-check input { accent-color: #c62828; width: 16px; height: 16px; cursor: pointer; }
+
+  /* Skills assessment grid */
+  .skills-grid { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+  .skills-grid th { text-align: left; padding: 8px 10px; background: #e8f5e9; color: #2e7d32; font-size: 13px; font-weight: 600; border-bottom: 2px solid #a5d6a7; }
+  .skills-grid td { padding: 6px 10px; border-bottom: 1px solid #e0e0e0; font-size: 13px; vertical-align: middle; }
+  .skills-grid tr:hover td { background: #f5f5f5; }
+  .skills-grid .skill-name { font-weight: 500; min-width: 180px; }
+  .skills-grid select { padding: 6px 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; font-family: inherit; }
+  .skills-grid select:focus { outline: none; border-color: #2e7d32; box-shadow: 0 0 0 2px rgba(46,125,50,0.15); }
+  .skills-grid input[type="text"] { width: 100%; padding: 6px 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; font-family: inherit; }
+  .skills-grid input[type="text"]:focus { outline: none; border-color: #2e7d32; box-shadow: 0 0 0 2px rgba(46,125,50,0.15); }
 </style>
 </head>
 <body>
@@ -254,12 +265,12 @@
 <div class="container">
 
   <div class="card">
-    <h2>Supervision Form Generator</h2>
-    <p class="subtitle">Generate a pre-filled supervision form for a staff member</p>
+    <h2>Staff Details</h2>
+    <p class="subtitle">Enter the staff member and supervision period details</p>
 
     <div class="preview-note">
       <strong>How this works</strong>
-      Enter the details below and click Download. The supervision template is built in &mdash; it generates a Word document with the details filled in.
+      Enter the details below and click Download. The supervision template is built in &mdash; it generates a Word document with all fields filled in.
     </div>
 
     <div class="form-row">
@@ -277,6 +288,65 @@
     <div class="form-row">
       <div class="form-group"><label>Date of Next Appraisal</label><input type="text" id="supNextAppraisal" placeholder="e.g. 30/06/2026"></div>
     </div>
+  </div>
+
+  <div class="card">
+    <h2>Supervision Content</h2>
+    <p class="subtitle">Complete the supervision discussion sections below</p>
+
+    <div class="form-group">
+      <label>Job Role &amp; Responsibility, Policy Renewals &amp; Updates</label>
+      <textarea id="supJobRole" rows="4" placeholder="Discuss job role responsibilities, any policy renewals or updates..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Changes to work methods &amp; suggestions to improve current work methods</label>
+      <textarea id="supWorkMethods" rows="4" placeholder="Any changes to working methods or suggestions for improvement..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Goals for Personal Development &amp; Training in the Year Ahead</label>
+      <textarea id="supGoals" rows="4" placeholder="Training goals and personal development plans..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Personal Performance Within the Workplace</label>
+      <textarea id="supPerformance" rows="4" placeholder="Discussion of personal performance..."></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Strengths</label>
+        <textarea id="supStrengths" rows="4" placeholder="Key strengths identified..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Weaknesses</label>
+        <textarea id="supWeaknesses" rows="4" placeholder="Areas for improvement..."></textarea>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Your Well Being</label>
+      <textarea id="supWellBeing" rows="4" placeholder="Discussion of employee wellbeing..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Goals achieved from last supervision</label>
+      <textarea id="supGoalsAchieved" rows="4" placeholder="Review of goals from previous supervision..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Supervision Feedback</label>
+      <textarea id="supFeedback" rows="5">Lead by example to foster a respectful, cooperative, and positive team environment. Encourage open communication and mutual support among staff members. Address any conflict or inappropriate behaviour promptly and professionally.</textarea>
+      <div class="hint">Pre-filled with default text. Edit as needed.</div>
+    </div>
+    <div class="form-group">
+      <label>Line Managers&#8217; Goals for individual</label>
+      <textarea id="supManagerGoals" rows="4" placeholder="Goals set by line manager for the employee..."></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Signature Dates</h2>
+    <p class="subtitle">Dates for the signature section</p>
+
+    <div class="form-row">
+      <div class="form-group"><label>Line Manager Signature Date</label><input type="text" id="supManagerSigDate" placeholder="e.g. 20/03/2026"></div>
+      <div class="form-group"><label>Employee Signature Date</label><input type="text" id="supEmployeeSigDate" placeholder="e.g. 20/03/2026"></div>
+    </div>
 
     <div id="supStatusMsg" class="status"></div>
 
@@ -293,12 +363,12 @@
 <div class="container">
 
   <div class="card">
-    <h2>Appraisal Form Generator</h2>
-    <p class="subtitle">Generate a pre-filled appraisal form for a staff member</p>
+    <h2>Staff Details</h2>
+    <p class="subtitle">Enter the staff member details and appraisal period</p>
 
     <div class="preview-note">
       <strong>How this works</strong>
-      Enter the details below and click Download. The appraisal template is built in &mdash; it generates an RTF document with the header details filled in.
+      Enter all the details below and click Download. The appraisal template is built in &mdash; it generates an RTF document with all fields filled in.
     </div>
 
     <div class="form-row">
@@ -312,6 +382,116 @@
     <div class="form-row">
       <div class="form-group"><label>Appraisal Year Ending</label><input type="text" id="appYearEnding" placeholder="e.g. 31/03/2026"></div>
       <div class="form-group"><label>Date of Next Appraisal</label><input type="text" id="appNextAppraisal" placeholder="e.g. 31/03/2027"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Part A &mdash; Skills Assessment</h2>
+    <p class="subtitle">Rate each skill area (1 = Poor, 5 = Excellent) and add comments</p>
+
+    <table class="skills-grid">
+      <thead>
+        <tr><th>Skill Area</th><th>Rating</th><th>Comments</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="skill-name">Quality and accuracy</td>
+          <td style="width:80px"><select id="appSkillRating_qualityAccuracy"><option value="">--</option><option value="N/A">N/A</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>
+          <td><input type="text" id="appSkillComment_qualityAccuracy" placeholder="Comments..."></td>
+        </tr>
+        <tr>
+          <td class="skill-name">Written communication</td>
+          <td style="width:80px"><select id="appSkillRating_writtenComm"><option value="">--</option><option value="N/A">N/A</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>
+          <td><input type="text" id="appSkillComment_writtenComm" placeholder="Comments..."></td>
+        </tr>
+        <tr>
+          <td class="skill-name">Verbal Communication</td>
+          <td style="width:80px"><select id="appSkillRating_verbalComm"><option value="">--</option><option value="N/A">N/A</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>
+          <td><input type="text" id="appSkillComment_verbalComm" placeholder="Comments..."></td>
+        </tr>
+        <tr>
+          <td class="skill-name">Work relationships</td>
+          <td style="width:80px"><select id="appSkillRating_workRelationships"><option value="">--</option><option value="N/A">N/A</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>
+          <td><input type="text" id="appSkillComment_workRelationships" placeholder="Comments..."></td>
+        </tr>
+        <tr>
+          <td class="skill-name">Productivity and efficiency</td>
+          <td style="width:80px"><select id="appSkillRating_productivity"><option value="">--</option><option value="N/A">N/A</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>
+          <td><input type="text" id="appSkillComment_productivity" placeholder="Comments..."></td>
+        </tr>
+        <tr>
+          <td class="skill-name">Achievement of targets</td>
+          <td style="width:80px"><select id="appSkillRating_achievementTargets"><option value="">--</option><option value="N/A">N/A</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>
+          <td><input type="text" id="appSkillComment_achievementTargets" placeholder="Comments..."></td>
+        </tr>
+        <tr>
+          <td class="skill-name">Willingness to take on additional duties</td>
+          <td style="width:80px"><select id="appSkillRating_additionalDuties"><option value="">--</option><option value="N/A">N/A</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>
+          <td><input type="text" id="appSkillComment_additionalDuties" placeholder="Comments..."></td>
+        </tr>
+        <tr>
+          <td class="skill-name">Ability to work without supervision</td>
+          <td style="width:80px"><select id="appSkillRating_workWithoutSup"><option value="">--</option><option value="N/A">N/A</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>
+          <td><input type="text" id="appSkillComment_workWithoutSup" placeholder="Comments..."></td>
+        </tr>
+        <tr>
+          <td class="skill-name">Ability to perform under pressure</td>
+          <td style="width:80px"><select id="appSkillRating_underPressure"><option value="">--</option><option value="N/A">N/A</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>
+          <td><input type="text" id="appSkillComment_underPressure" placeholder="Comments..."></td>
+        </tr>
+        <tr>
+          <td class="skill-name">Attendance record</td>
+          <td style="width:80px"><select id="appSkillRating_attendance"><option value="">--</option><option value="N/A">N/A</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>
+          <td><input type="text" id="appSkillComment_attendance" placeholder="Comments..."></td>
+        </tr>
+        <tr>
+          <td class="skill-name">Timekeeping record</td>
+          <td style="width:80px"><select id="appSkillRating_timekeeping"><option value="">--</option><option value="N/A">N/A</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>
+          <td><input type="text" id="appSkillComment_timekeeping" placeholder="Comments..."></td>
+        </tr>
+        <tr>
+          <td class="skill-name">Organisational skills</td>
+          <td style="width:80px"><select id="appSkillRating_orgSkills"><option value="">--</option><option value="N/A">N/A</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>
+          <td><input type="text" id="appSkillComment_orgSkills" placeholder="Comments..."></td>
+        </tr>
+        <tr>
+          <td class="skill-name">Client satisfaction</td>
+          <td style="width:80px"><select id="appSkillRating_clientSatisfaction"><option value="">--</option><option value="N/A">N/A</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>
+          <td><input type="text" id="appSkillComment_clientSatisfaction" placeholder="Comments..."></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Part B &mdash; Employee Feedback</h2>
+    <p class="subtitle">Employee self-assessment and development goals</p>
+
+    <div class="form-group">
+      <label>What are your work-related ambitions?</label>
+      <textarea id="appAmbitions" rows="4" placeholder="Describe your work-related ambitions..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>What do you consider to be your main achievements during the last appraisal year?</label>
+      <textarea id="appAchievements" rows="4" placeholder="List main achievements from the past year..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>What further training/education would you like to receive?</label>
+      <textarea id="appTraining" rows="4" placeholder="Desired training or education..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Any other comments</label>
+      <textarea id="appOtherComments" rows="4" placeholder="Any additional comments..."></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Signature Dates</h2>
+    <p class="subtitle">Dates for the signature section</p>
+
+    <div class="form-row">
+      <div class="form-group"><label>Manager Signature Date</label><input type="text" id="appManagerSigDate" placeholder="e.g. 20/03/2026"></div>
+      <div class="form-group"><label>Employee Signature Date</label><input type="text" id="appEmployeeSigDate" placeholder="e.g. 20/03/2026"></div>
     </div>
 
     <div id="appStatusMsg" class="status"></div>
@@ -977,6 +1157,22 @@ async function downloadSupervision() {
   const periodTo = document.getElementById('supPeriodTo').value.trim();
   const nextAppraisalDate = document.getElementById('supNextAppraisal').value.trim();
 
+  // Textarea fields
+  const jobRole = document.getElementById('supJobRole').value.trim();
+  const workMethods = document.getElementById('supWorkMethods').value.trim();
+  const goals = document.getElementById('supGoals').value.trim();
+  const performance = document.getElementById('supPerformance').value.trim();
+  const strengths = document.getElementById('supStrengths').value.trim();
+  const weaknesses = document.getElementById('supWeaknesses').value.trim();
+  const wellBeing = document.getElementById('supWellBeing').value.trim();
+  const goalsAchieved = document.getElementById('supGoalsAchieved').value.trim();
+  const feedback = document.getElementById('supFeedback').value.trim();
+  const managerGoals = document.getElementById('supManagerGoals').value.trim();
+
+  // Signature dates
+  const managerSigDate = document.getElementById('supManagerSigDate').value.trim();
+  const employeeSigDate = document.getElementById('supEmployeeSigDate').value.trim();
+
   if (!employeeName || !managerName) {
     statusEl.className = 'status error';
     statusEl.textContent = 'Please enter at least the Employee Name and Line Manager Name.';
@@ -1003,6 +1199,26 @@ async function downloadSupervision() {
       nextAppraisalDate: nextAppraisalDate
     });
 
+    // Fill text content sections
+    xml = insertTextAfterHeading(xml, 'Job Role', jobRole);
+    xml = insertTextAfterHeading(xml, 'Changes to work methods', workMethods);
+    xml = insertTextAfterHeading(xml, 'Goals for Personal Development', goals);
+    xml = insertTextAfterHeading(xml, 'Personal Performance', performance);
+    xml = insertTextAfterHeading(xml, 'Strengths', strengths);
+    xml = insertTextAfterHeading(xml, 'Weaknesses', weaknesses);
+    xml = insertTextAfterHeading(xml, 'Your Well Being', wellBeing);
+    xml = insertTextAfterHeading(xml, 'Goals achieved from last supervision', goalsAchieved);
+    xml = insertTextAfterHeading(xml, 'Supervision Feedback', feedback);
+    xml = insertTextAfterHeading(xml, 'Line Manager', managerGoals);
+
+    // Fill signature dates
+    if (managerSigDate) {
+      xml = fillSupervisionSigDate(xml, 'Manager', managerSigDate);
+    }
+    if (employeeSigDate) {
+      xml = fillSupervisionSigDate(xml, 'Employee', employeeSigDate);
+    }
+
     zip.file('word/document.xml', xml);
     const blob = await zip.generateAsync({ type: 'blob', mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
 
@@ -1020,8 +1236,10 @@ async function downloadSupervision() {
   } catch (e) {
     statusEl.className = 'status error';
     statusEl.textContent = 'Error: ' + e.message;
+    console.error(e);
   }
 }
+
 
 function fillSupervisionFields(xml, fields) {
   // The supervision form has single-column table rows.
@@ -1105,6 +1323,61 @@ function fillSupervisionFields(xml, fields) {
 }
 
 
+// --- Insert text content after a heading in supervision XML ---
+function insertTextAfterHeading(xml, heading, text) {
+  if (!text) return xml;
+  var idx = xml.indexOf(heading);
+  if (idx === -1) return xml;
+  var pEnd = xml.indexOf('</w:p>', idx);
+  if (pEnd === -1) return xml;
+  var nextP = xml.indexOf('<w:p ', pEnd);
+  if (nextP === -1) return xml;
+  var nextPEnd = xml.indexOf('</w:p>', nextP);
+  if (nextPEnd === -1) return xml;
+  var emptyP = xml.substring(nextP, nextPEnd + 6);
+  if (/<w:t[ >]/.test(emptyP)) return xml;
+  var rPrMatch = emptyP.match(/<w:rPr>(.*?)<\/w:rPr>/);
+  var rPrInner = rPrMatch ? rPrMatch[1] : '';
+  var rPr = rPrInner ? '<w:rPr>' + rPrInner + '</w:rPr>' : '';
+  var lines = text.split('\n');
+  var newContent = '';
+  for (var i = 0; i < lines.length; i++) {
+    if (lines[i].trim()) {
+      if (i > 0) {
+        newContent += '<w:r>' + rPr + '<w:br/></w:r>';
+      }
+      newContent += '<w:r>' + rPr + '<w:t xml:space="preserve">' + escapeXml(lines[i]) + '</w:t></w:r>';
+    }
+  }
+  var filled = emptyP.replace('</w:p>', newContent + '</w:p>');
+  xml = xml.substring(0, nextP) + filled + xml.substring(nextPEnd + 6);
+  return xml;
+}
+
+// --- Fill signature date in supervision form ---
+function fillSupervisionSigDate(xml, role, date) {
+  var roleIdx = xml.lastIndexOf(role + ' Signature');
+  if (roleIdx === -1) {
+    roleIdx = xml.lastIndexOf(role);
+    if (roleIdx === -1) return xml;
+  }
+  var searchRegion = xml.substring(roleIdx, Math.min(xml.length, roleIdx + 2000));
+  var dateIdx = searchRegion.indexOf('Date');
+  if (dateIdx === -1) return xml;
+  var absDateIdx = roleIdx + dateIdx;
+  var regionEnd = Math.min(xml.length, absDateIdx + 500);
+  var region = xml.substring(absDateIdx, regionEnd);
+  var updated = region.replace(/Date;?\s*[.\u2026\s]{3,}/, 'Date; ' + escapeXml(date));
+  if (updated === region) {
+    updated = region.replace(/(Date[;:]?\s*<\/w:t>)/, 'Date; ' + escapeXml(date) + '</w:t>');
+  }
+  if (updated !== region) {
+    xml = xml.substring(0, absDateIdx) + updated + xml.substring(regionEnd);
+  }
+  return xml;
+}
+
+
 // --- Appraisal Generator ---
 async function downloadAppraisal() {
   const statusEl = document.getElementById('appStatusMsg');
@@ -1115,6 +1388,40 @@ async function downloadAppraisal() {
   const managerName = document.getElementById('appManagerName').value.trim();
   const yearEnding = document.getElementById('appYearEnding').value.trim();
   const nextAppraisal = document.getElementById('appNextAppraisal').value.trim();
+
+  // Skills ratings and comments
+  const skills = [
+    { label: 'Quality and accuracy', id: 'qualityAccuracy' },
+    { label: 'Written communication', id: 'writtenComm' },
+    { label: 'Verbal Communication', id: 'verbalComm' },
+    { label: 'Work relationships', id: 'workRelationships' },
+    { label: 'Productivity and efficiency', id: 'productivity' },
+    { label: 'Achievement of targets', id: 'achievementTargets' },
+    { label: 'Willingness to take on additional duties', id: 'additionalDuties' },
+    { label: 'Ability to work without supervision', id: 'workWithoutSup' },
+    { label: 'Ability to perform under pressure', id: 'underPressure' },
+    { label: 'Attendance record', id: 'attendance' },
+    { label: 'Timekeeping record', id: 'timekeeping' },
+    { label: 'Organisational skills', id: 'orgSkills' },
+    { label: 'Client satisfaction', id: 'clientSatisfaction' }
+  ];
+  const skillData = skills.map(function(s) {
+    return {
+      label: s.label,
+      rating: document.getElementById('appSkillRating_' + s.id).value,
+      comment: document.getElementById('appSkillComment_' + s.id).value.trim()
+    };
+  });
+
+  // Part B textareas
+  const ambitions = document.getElementById('appAmbitions').value.trim();
+  const achievements = document.getElementById('appAchievements').value.trim();
+  const training = document.getElementById('appTraining').value.trim();
+  const otherComments = document.getElementById('appOtherComments').value.trim();
+
+  // Signature dates
+  const managerSigDate = document.getElementById('appManagerSigDate').value.trim();
+  const employeeSigDate = document.getElementById('appEmployeeSigDate').value.trim();
 
   if (!employeeName || !managerName) {
     statusEl.className = 'status error';
@@ -1148,11 +1455,46 @@ async function downloadAppraisal() {
       rtf = insertRtfCellValue(rtf, 'Date of next appraisal:', nextAppraisal);
     }
     if (yearEnding) {
-      // Replace ". . . . . . . . . . . . . . . (insert date)" with the year
       rtf = rtf.replace(
         /year ending \. \. \. \. \. \. \. \. \. \. \. \. \. \. \. \(insert date\)/,
         'year ending ' + rtfEscape(yearEnding)
       );
+    }
+
+    // Fill skills ratings into the RTF table
+    for (var si = 0; si < skillData.length; si++) {
+      var sk = skillData[si];
+      var ratingText = sk.rating || '';
+      var commentText = sk.comment || '';
+      var combined = ratingText;
+      if (commentText) {
+        combined = combined ? combined + ' - ' + commentText : commentText;
+      }
+      if (combined) {
+        rtf = insertRtfCellValue(rtf, sk.label, combined);
+      }
+    }
+
+    // Fill Part B textareas
+    if (ambitions) {
+      rtf = insertRtfAfterQuestion(rtf, 'work-related ambitions', ambitions);
+    }
+    if (achievements) {
+      rtf = insertRtfAfterQuestion(rtf, 'main achievements', achievements);
+    }
+    if (training) {
+      rtf = insertRtfAfterQuestion(rtf, 'training/education', training);
+    }
+    if (otherComments) {
+      rtf = insertRtfAfterQuestion(rtf, 'Any other comments', otherComments);
+    }
+
+    // Fill signature dates
+    if (managerSigDate) {
+      rtf = fillRtfSigDate(rtf, 'Manager', managerSigDate);
+    }
+    if (employeeSigDate) {
+      rtf = fillRtfSigDate(rtf, 'Employee', employeeSigDate);
     }
 
     // Download as RTF
@@ -1173,15 +1515,46 @@ async function downloadAppraisal() {
   } catch (e) {
     statusEl.className = 'status error';
     statusEl.textContent = 'Error: ' + e.message;
+    console.error(e);
   }
 }
+
 
 function rtfEscape(str) {
   return str.replace(/\\/g, '\\\\').replace(/\{/g, '\\{').replace(/\}/g, '\\}');
 }
 
 function insertRtfCellValue(rtf, label, value) {
-  // RTF table: "Label\cell }{formatting \trowd...}{...}\cell"
+  // RTF table: "Label\cell }
+
+function insertRtfAfterQuestion(rtf, questionFragment, answer) {
+  var idx = rtf.indexOf(questionFragment);
+  if (idx === -1) return rtf;
+  var parIdx = rtf.indexOf('\\par', idx + questionFragment.length);
+  var cellIdx = rtf.indexOf('\\cell', idx + questionFragment.length);
+  var insertIdx = -1;
+  if (parIdx !== -1 && cellIdx !== -1) insertIdx = Math.min(parIdx, cellIdx);
+  else if (parIdx !== -1) insertIdx = parIdx;
+  else if (cellIdx !== -1) insertIdx = cellIdx;
+  if (insertIdx === -1) return rtf;
+  var rtfAnswer = '\\par ' + rtfEscape(answer);
+  rtf = rtf.substring(0, insertIdx) + rtfAnswer + rtf.substring(insertIdx);
+  return rtf;
+}
+
+function fillRtfSigDate(rtf, role, date) {
+  var roleIdx = rtf.indexOf(role);
+  if (roleIdx === -1) return rtf;
+  var searchEnd = Math.min(rtf.length, roleIdx + 1000);
+  var region = rtf.substring(roleIdx, searchEnd);
+  var updated = region.replace(/Date:\s*[\.\s]{3,}/, 'Date: ' + rtfEscape(date));
+  if (updated !== region) {
+    rtf = rtf.substring(0, roleIdx) + updated + rtf.substring(searchEnd);
+  }
+  return rtf;
+}
+
+{formatting \trowd...}{...}\cell"
   // Find the label, then find \cell after it (label cell end),
   // then find the next \cell (value cell end), insert text before it
   var labelIdx = rtf.indexOf(label);
