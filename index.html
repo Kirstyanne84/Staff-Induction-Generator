@@ -693,10 +693,10 @@ async function downloadBooklet() {
       docXml = insertCommentAfterLabel(docXml, 'Initial Meeting', initialMentorComments);
     }
     if (interimMentorComments) {
-      docXml = insertCommentAfterLabel(docXml, 'Mentor Comments:', interimMentorComments, 'INTERIM INDUCTION ASSESSMENT');
+      docXml = insertCommentAfterLabel(docXml, 'Mentor Comments:', interimMentorComments, 'INTERIM INDUCTION ASSESSMENT', false, 24);
     }
     if (finalMentorComments) {
-      docXml = insertCommentAfterLabel(docXml, 'Mentor Comments:', finalMentorComments, 'FINAL INDUCTION ASSESSMENT');
+      docXml = insertCommentAfterLabel(docXml, 'Mentor Comments:', finalMentorComments, 'FINAL INDUCTION ASSESSMENT', false, 24);
     }
     // Save the modified XML back
     zip.file('word/document.xml', docXml);
@@ -1044,7 +1044,7 @@ function fillDateAfterSection(xml, sectionTitle, date) {
 
 // ─── Insert comment text after a label in the assessment sections ───
 // Finds the label text, then inserts the comment into the first empty <w:p> after it
-function insertCommentAfterLabel(xml, label, comment, sectionTitle, isCarerComment) {
+function insertCommentAfterLabel(xml, label, comment, sectionTitle, isCarerComment, fontSize) {
   // Find the section first to narrow the search
   let searchFrom = 0;
   if (sectionTitle) {
@@ -1085,8 +1085,9 @@ function insertCommentAfterLabel(xml, label, comment, sectionTitle, isCarerComme
   const rPrMatch = emptyPara.match(/<w:rPr>(.*?)<\/w:rPr>/);
   let rPrInner = rPrMatch ? rPrMatch[1] : '';
   // Use a readable font size (10pt = 20 half-points)
-  rPrInner = rPrInner.replace(/<w:sz w:val="\d+"\/>/g, '<w:sz w:val="20"/>');
-  rPrInner = rPrInner.replace(/<w:szCs w:val="\d+"\/>/g, '<w:szCs w:val="20"/>');
+  var fSize = fontSize || 20;
+  rPrInner = rPrInner.replace(/<w:sz w:val="\d+"\/>/g, '<w:sz w:val="' + fSize + '"/>');
+  rPrInner = rPrInner.replace(/<w:szCs w:val="\d+"\/>/g, '<w:szCs w:val="' + fSize + '"/>');
   const rPr = rPrInner ? '<w:rPr>' + rPrInner + '</w:rPr>' : '';
 
   // Build the text run with the comment
