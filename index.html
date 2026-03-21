@@ -1622,12 +1622,11 @@ async function downloadSupervision() {
     // Combine feedback and manager goals into one block
     let feedbackCombined = feedback;
     if (managerGoals) {
-      if (feedbackCombined) feedbackCombined += '
-
-';
+      if (feedbackCombined) feedbackCombined += '\n\n';
       feedbackCombined += managerGoals;
     }
     xml = insertTextAfterHeading(xml, 'Supervision Feedback', feedbackCombined);
+
 
     // Fill signature dates
     if (managerSigDate) {
