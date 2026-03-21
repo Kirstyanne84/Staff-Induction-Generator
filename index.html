@@ -1622,7 +1622,7 @@ async function downloadSupervision() {
     // Combine feedback and manager goals into one block
     let feedbackCombined = feedback;
     if (managerGoals) {
-      if (feedbackCombined) feedbackCombined += '\n\n';
+      if (feedbackCombined) feedbackCombined += '\n\nLine Managers Goals:\n';
       feedbackCombined += managerGoals;
     }
     xml = insertTextAfterHeading(xml, 'Supervision Feedback', feedbackCombined);
