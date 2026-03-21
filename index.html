@@ -131,6 +131,105 @@
   .skills-grid input[type="text"] { width: 100%; padding: 6px 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; font-family: inherit; }
   .skills-grid input[type="text"]:focus { outline: none; border-color: #1565c0; box-shadow: 0 0 0 2px rgba(46,125,50,0.15); }
 </style>
+<style>
+  /* ===== ACP Generator Scoped Styles ===== */
+  #tab-acp .acp-header {
+    background: linear-gradient(135deg, #0070C0, #005a9e);
+    color: white; padding: 16px 24px; text-align: center;
+    border-radius: 8px; margin-bottom: 20px;
+  }
+  #tab-acp .acp-header.dementia { background: linear-gradient(135deg, #6a1b9a, #8e24aa); }
+  #tab-acp .acp-header h2 { font-size: 22px; font-weight: 600; margin-bottom: 2px; color: white; border: none; padding: 0; }
+  #tab-acp .acp-header p { font-size: 13px; opacity: 0.85; }
+  #tab-acp .type-chooser { display: flex; gap: 16px; justify-content: center; margin-bottom: 24px; flex-wrap: wrap; }
+  #tab-acp .type-btn { flex: 1; max-width: 350px; padding: 24px; border-radius: 12px; border: 3px solid #ddd; background: white; cursor: pointer; text-align: center; transition: all 0.2s; }
+  #tab-acp .type-btn:hover { border-color: #0070C0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  #tab-acp .type-btn.active-standard { border-color: #0070C0; background: #f0f7ff; }
+  #tab-acp .type-btn.active-dementia { border-color: #6a1b9a; background: #f5f0ff; }
+  #tab-acp .type-btn h3 { font-size: 18px; margin-bottom: 6px; }
+  #tab-acp .type-btn p { font-size: 13px; color: #666; }
+  #tab-acp .type-btn .icon { font-size: 32px; margin-bottom: 8px; }
+  #tab-acp .step-indicator { display: flex; justify-content: center; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+  #tab-acp .step-dot { width: 36px; height: 36px; border-radius: 50%; background: #ddd; color: #999; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; transition: all 0.3s; cursor: pointer; }
+  #tab-acp .step-dot.active { background: #0070C0; color: white; }
+  #tab-acp .step-dot.completed { background: #28a745; color: white; }
+  #tab-acp.dementia-mode .step-dot.active { background: #6a1b9a; }
+  #tab-acp .card h2 { color: #0070C0; }
+  #tab-acp.dementia-mode .card h2 { color: #6a1b9a; border-bottom-color: #6a1b9a; }
+  #tab-acp .form-group input:focus, #tab-acp .form-group textarea:focus, #tab-acp .form-group select:focus { border-color: #0070C0; box-shadow: 0 0 0 3px rgba(0,112,192,0.15); }
+  #tab-acp.dementia-mode .form-group input:focus, #tab-acp.dementia-mode .form-group textarea:focus, #tab-acp.dementia-mode .form-group select:focus { border-color: #6a1b9a; box-shadow: 0 0 0 3px rgba(106,27,154,0.15); }
+  #tab-acp .btn-primary { background: #0070C0; color: white; }
+  #tab-acp .btn-primary:hover { background: #005a9e; }
+  #tab-acp.dementia-mode .btn-primary { background: #6a1b9a; }
+  #tab-acp.dementia-mode .btn-primary:hover { background: #4a148c; }
+  #tab-acp .btn-download { background: #28a745; color: white; }
+  #tab-acp .btn-download:hover { background: #218838; }
+  #tab-acp .btn-example { background: #6c757d; color: white; }
+  #tab-acp .btn-example:hover { background: #5a6268; }
+  #tab-acp .btn-switch { background: #dc3545; color: white; font-size: 12px; padding: 8px 16px; }
+  #tab-acp .btn-switch:hover { background: #c82333; }
+  #tab-acp .btn-paste { background: #0070C0; color: white; width: 100%; padding: 14px; font-size: 16px; margin-bottom: 12px; }
+  #tab-acp .btn-paste:hover { background: #005a9e; }
+  #tab-acp.dementia-mode .btn-paste { background: #6a1b9a; }
+  #tab-acp.dementia-mode .btn-paste:hover { background: #4a148c; }
+  #tab-acp .form-row.three { grid-template-columns: 1fr 1fr 1fr; }
+  #tab-acp .acp-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 16px; }
+  #tab-acp .acp-modal { background: white; border-radius: 12px; padding: 28px; width: 100%; max-width: 700px; max-height: 90vh; overflow-y: auto; }
+  #tab-acp .acp-modal h2 { color: #0070C0; font-size: 20px; margin-bottom: 8px; border: none; }
+  #tab-acp.dementia-mode .acp-modal h2 { color: #6a1b9a; }
+  #tab-acp .acp-modal p { font-size: 13px; color: #666; margin-bottom: 16px; }
+  #tab-acp .acp-modal textarea { width: 100%; min-height: 300px; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; font-family: inherit; resize: vertical; }
+  #tab-acp .acp-modal .btn-row { margin-top: 16px; }
+  .hidden { display: none !important; }
+
+  /* ===== Traffic Light Generator Scoped Styles ===== */
+  #tab-traffic .tl-header { background: linear-gradient(135deg, #2c3e50, #34495e); color: white; padding: 16px 24px; text-align: center; border-radius: 8px; margin-bottom: 20px; }
+  #tab-traffic .tl-header h2 { font-size: 22px; font-weight: 600; margin-bottom: 2px; color: white; border: none; padding: 0; }
+  #tab-traffic .tl-header p { font-size: 13px; opacity: 0.85; }
+  #tab-traffic .tl-top-bar { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; align-items: flex-end; }
+  #tab-traffic .tl-top-bar .form-group { flex: 1; min-width: 200px; margin: 0; }
+  #tab-traffic .btn-add { background: #0070C0; color: white; }
+  #tab-traffic .btn-add:hover { background: #005a9e; }
+  #tab-traffic .btn-clear { background: #dc3545; color: white; }
+  #tab-traffic .btn-clear:hover { background: #c82333; }
+  #tab-traffic .btn-remove { background: #dc3545; color: white; padding: 6px 12px; font-size: 12px; }
+  #tab-traffic .btn-remove:hover { background: #c82333; }
+  #tab-traffic .btn-download { background: #28a745; color: white; }
+  #tab-traffic .btn-download:hover { background: #218838; }
+  #tab-traffic .btn-parse { background: #0070C0; color: white; margin-top: 10px; }
+  #tab-traffic .btn-parse:hover { background: #005a9e; }
+  #tab-traffic .tl-section-card { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 24px; margin-bottom: 20px; }
+  #tab-traffic .tl-section-card h3 { font-size: 16px; color: #2c3e50; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+  #tab-traffic .colour-group { margin-bottom: 16px; }
+  #tab-traffic .colour-label { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  #tab-traffic .colour-dot { width: 16px; height: 16px; border-radius: 50%; display: inline-block; }
+  #tab-traffic .colour-dot.red { background: #dc3545; }
+  #tab-traffic .colour-dot.amber { background: #ffc107; }
+  #tab-traffic .colour-dot.green { background: #28a745; }
+  #tab-traffic .colour-group textarea { width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; font-family: inherit; resize: vertical; min-height: 80px; }
+  #tab-traffic .colour-group textarea:focus { outline: none; border-color: #0070C0; box-shadow: 0 0 0 3px rgba(0,112,192,0.15); }
+  #tab-traffic .tl-section-type-row { display: flex; gap: 12px; margin-bottom: 16px; align-items: flex-end; }
+  #tab-traffic .tl-section-type-row .form-group { flex: 1; margin: 0; }
+  #tab-traffic .tl-section-type-row select, #tab-traffic .tl-section-type-row input { width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; font-family: inherit; }
+  #tab-traffic .tl-download-area { text-align: center; padding: 20px 0; }
+  #tab-traffic .tl-empty-state { text-align: center; padding: 60px 20px; color: #999; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+  #tab-traffic .tl-empty-state h3 { color: #999; font-size: 18px; margin-bottom: 8px; }
+  #tab-traffic .tl-empty-state p { font-size: 14px; }
+  #tab-traffic .tl-paste-area { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 24px; margin-bottom: 20px; }
+  #tab-traffic .tl-paste-area h3 { font-size: 16px; color: #2c3e50; margin-bottom: 8px; }
+  #tab-traffic .tl-paste-area p { font-size: 13px; color: #666; margin-bottom: 12px; }
+  #tab-traffic .tl-paste-area textarea { width: 100%; padding: 12px; border: 2px dashed #ccc; border-radius: 8px; font-size: 14px; font-family: inherit; resize: vertical; min-height: 150px; }
+  #tab-traffic .tl-paste-area textarea:focus { outline: none; border-color: #0070C0; background: #f8fbff; }
+  #tab-traffic .tl-inner-tab-bar { display: flex; gap: 0; margin-bottom: 24px; }
+  #tab-traffic .tl-tab { flex: 1; padding: 12px 16px; border: 2px solid #ddd; background: #f8f8f8; font-size: 14px; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.2s; }
+  #tab-traffic .tl-tab:first-child { border-radius: 8px 0 0 8px; }
+  #tab-traffic .tl-tab:last-child { border-radius: 0 8px 8px 0; }
+  #tab-traffic .tl-tab.active { background: #0070C0; color: white; border-color: #0070C0; }
+  #tab-traffic .tl-tab:not(.active):hover { background: #e8e8e8; }
+  #tab-traffic .tl-tab-content { display: none; }
+  #tab-traffic .tl-tab-content.active { display: block; }
+</style>
+
 </head>
 <body>
 
@@ -140,9 +239,11 @@
 </div>
 
 <div class="tab-bar">
-  <button class="tab-btn active" onclick="switchTab('induction')">Induction</button>
-  <button class="tab-btn" onclick="switchTab('supervision')">Supervision</button>
-  <button class="tab-btn" onclick="switchTab('appraisal')">Appraisal</button>
+  <button class="tab-btn active" data-tab="induction" onclick="switchTab('induction')">Induction</button>
+  <button class="tab-btn" data-tab="supervision" onclick="switchTab('supervision')">Supervision</button>
+  <button class="tab-btn" data-tab="appraisal" onclick="switchTab('appraisal')">Appraisal</button>
+  <button class="tab-btn" data-tab="acp" onclick="switchTab('acp')">ACP Generator</button>
+  <button class="tab-btn" data-tab="traffic" onclick="switchTab('traffic')">Traffic Light</button>
 </div>
 
 <!-- TAB 1: INDUCTION -->
@@ -503,14 +604,346 @@
 </div>
 </div>
 
+
+<!-- TAB 4: ACP GENERATOR -->
+<div id="tab-acp" class="tab-panel">
+<div class="container">
+  <div class="acp-header" id="acpHeader">
+    <h2 id="acpHeaderTitle">ACP Generator</h2>
+    <p id="acpHeaderSubtitle">Future Care and Anticipatory Care Planning</p>
+  </div>
+
+  <!-- TYPE CHOOSER -->
+  <div id="typeChooser">
+    <div class="type-chooser">
+      <div class="type-btn" onclick="acpSelectType('standard')">
+        <div class="icon">📋</div>
+        <h3>Standard ACP</h3>
+        <p>Future Care and Anticipatory Care Planning for residents who can participate in their own planning</p>
+      </div>
+      <div class="type-btn" onclick="acpSelectType('dementia')">
+        <div class="icon">🧠</div>
+        <h3>Advanced Dementia ACP</h3>
+        <p>Best-interest decision-making for people living with advanced dementia, focusing on comfort, dignity and quality of life</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP INDICATOR -->
+  <div class="step-indicator hidden" id="stepIndicator"></div>
+
+  <!-- ============================================ -->
+  <!-- STANDARD ACP STEPS (9 steps) -->
+  <!-- ============================================ -->
+
+  <!-- S1: Resident Details -->
+  <div class="card hidden" id="s1">
+    <h2>Resident Details</h2>
+    <p class="subtitle">Basic information about the resident</p>
+    <button class="btn btn-paste" onclick="acpOpenPasteModal('standard')">Paste from Claude</button>
+    <div class="form-row">
+      <div class="form-group"><label class="required">Resident name</label><input type="text" id="s_residentName" placeholder="e.g. David McLeod"></div>
+      <div class="form-group"><label>Preferred name</label><input type="text" id="s_preferredName" placeholder="e.g. David"></div>
+    </div>
+    <div class="form-row three">
+      <div class="form-group"><label>Date of birth</label><input type="text" id="s_dob" placeholder="e.g. 05/04/1959"></div>
+      <div class="form-group"><label>Unit</label><select id="s_unit"><option value="">-- Select --</option><option value="Garnock">Garnock</option><option value="Eglinton">Eglinton</option></select></div>
+      <div class="form-group"><label>Room number</label><input type="text" id="s_roomNo" placeholder="e.g. 7"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Named nurse / key worker</label><input type="text" id="s_namedNurse" placeholder="e.g. Gloria Afriyie / Kirsty Austen"></div>
+      <div class="form-group"><label>Date ACP started</label><input type="text" id="s_planDate" placeholder="e.g. 17/02/2026"></div>
+    </div>
+    <div class="form-row full">
+      <div class="form-group"><label>People involved</label><input type="text" id="s_peopleInvolved" placeholder="e.g. David McLeod, Kirsty Austen"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-switch" onclick="acpSwitchType()">Switch ACP Type</button>
+      <button class="btn btn-example" onclick="acpLoadStandardExample()">Load Example</button>
+      <button class="btn btn-primary" onclick="acpGoStep(2)">Next</button>
+    </div>
+  </div>
+
+  <!-- S2: What Matters Most to Me -->
+  <div class="card hidden" id="s2">
+    <h2>What Matters Most to Me</h2>
+    <p class="subtitle">What is important to the resident in their own words</p>
+    <div class="form-group"><label class="required">What makes a good day for me</label><textarea id="s_goodDay" rows="4" placeholder="What does the resident enjoy? What makes their day good?"></textarea></div>
+    <div class="form-group"><label class="required">What I value most right now</label><textarea id="s_valueMost" rows="4" placeholder="Independence, choices, family, routines..."></textarea></div>
+    <div class="form-group"><label>What helps me feel safe and calm</label><textarea id="s_safeCalm" rows="4" placeholder="Being able to move freely, familiar surroundings, routine..."></textarea></div>
+    <div class="form-group"><label>What worries or upsets me</label><textarea id="s_worriesUpsets" rows="4" placeholder="What causes distress or frustration?"></textarea></div>
+    <div class="btn-row"><button class="btn btn-secondary" onclick="acpGoStep(1)">Back</button><button class="btn btn-primary" onclick="acpGoStep(3)">Next</button></div>
+  </div>
+
+  <!-- S3: Wishes for Everyday Care -->
+  <div class="card hidden" id="s3">
+    <h2>Wishes for Everyday Care</h2>
+    <p class="subtitle">Preferences for daily routines, personal care, food and social needs</p>
+    <div class="form-group"><label>Personal care preferences</label><textarea id="s_personalCare" rows="4" placeholder="How personal care should be approached"></textarea></div>
+    <div class="form-group"><label>Food and drink preferences</label><textarea id="s_foodDrink" rows="4" placeholder="Diet, favourite foods, meal preferences"></textarea></div>
+    <div class="form-group"><label>Social, cultural or faith needs</label><textarea id="s_socialCultural" rows="4" placeholder="Faith, social activities, cultural needs"></textarea></div>
+    <div class="form-group"><label>Where I prefer to spend my time</label><textarea id="s_whereSpendTime" rows="4" placeholder="Favourite places in the home, activities"></textarea></div>
+    <div class="btn-row"><button class="btn btn-secondary" onclick="acpGoStep(2)">Back</button><button class="btn btn-primary" onclick="acpGoStep(4)">Next</button></div>
+  </div>
+
+  <!-- S4: Health and Treatment Decisions -->
+  <div class="card hidden" id="s4">
+    <h2>Health and Treatment Decisions</h2>
+    <p class="subtitle">Understanding of health and views on treatment</p>
+    <div class="form-group"><label>My understanding of my health</label><textarea id="s_understandHealth" rows="4" placeholder="What does the resident understand about their health?"></textarea></div>
+    <div class="form-group"><label>What is important to me if my health changes</label><textarea id="s_healthChanges" rows="4" placeholder="Being told, choices respected, staying informed"></textarea></div>
+    <div class="form-group"><label>Treatments I would or would not want</label><textarea id="s_treatments" rows="4" placeholder="What treatments are acceptable? What is not wanted?"></textarea></div>
+    <div class="form-group"><label>Decisions about hospital or escalation</label><textarea id="s_hospitalEscalation" rows="4" placeholder="How decisions about hospital should be made"></textarea></div>
+    <div class="btn-row"><button class="btn btn-secondary" onclick="acpGoStep(3)">Back</button><button class="btn btn-primary" onclick="acpGoStep(5)">Next</button></div>
+  </div>
+
+  <!-- S5: Anticipatory Planning -->
+  <div class="card hidden" id="s5">
+    <h2>Anticipatory Planning</h2>
+    <p class="subtitle">What should happen if the resident becomes unwell</p>
+    <div class="form-group"><label>Preferred approach if I become unwell</label><textarea id="s_approachUnwell" rows="4" placeholder="Assessed at home, contact GP, what the resident wants to know"></textarea></div>
+    <div class="form-group"><label>Who to contact</label><textarea id="s_whoContact" rows="4" placeholder="Social worker, family, GP..."></textarea></div>
+    <div class="form-group"><label>What helps me feel supported during illness</label><textarea id="s_supportedIllness" rows="4" placeholder="Being told what's happening, choices respected"></textarea></div>
+    <div class="btn-row"><button class="btn btn-secondary" onclick="acpGoStep(4)">Back</button><button class="btn btn-primary" onclick="acpGoStep(6)">Next</button></div>
+  </div>
+
+  <!-- S6: Hospital Admission and Emergency Care -->
+  <div class="card hidden" id="s6">
+    <h2>Hospital Admission and Emergency Care</h2>
+    <p class="subtitle">Views on hospital and when it may or may not be appropriate</p>
+    <div class="form-group"><label>Views on hospital admission</label><textarea id="s_hospitalViews" rows="4" placeholder="How does the resident feel about going to hospital?"></textarea></div>
+    <div class="form-group"><label>Situations where admission may not be appropriate</label><textarea id="s_admissionNotAppropriate" rows="4" placeholder="When could care be provided at home instead?"></textarea></div>
+    <div class="btn-row"><button class="btn btn-secondary" onclick="acpGoStep(5)">Back</button><button class="btn btn-primary" onclick="acpGoStep(7)">Next</button></div>
+  </div>
+
+  <!-- S7: CPR and Treatment Escalation -->
+  <div class="card hidden" id="s7">
+    <h2>CPR and Treatment Escalation</h2>
+    <p class="subtitle">DNACPR status, treatment escalation and summary of discussion</p>
+    <div class="form-row">
+      <div class="form-group"><label>DNACPR status</label><select id="s_dnacpr"><option value="">-- Select --</option><option value="Yes - DNACPR in place">Yes - DNACPR in place</option><option value="No - Always resuscitate">No - Always resuscitate</option><option value="Not yet discussed">Not yet discussed</option></select></div>
+      <div class="form-group"><label>DNACPR location</label><input type="text" id="s_dnacprLocation" placeholder="e.g. Duty room file"></div>
+    </div>
+    <div class="form-group"><label>Treatment Escalation Plan</label><textarea id="s_treatmentPlan" rows="4" placeholder="What should happen if the resident becomes unwell? Pain management, changes, decisions..."></textarea></div>
+    <div class="form-group"><label>Summary of discussion</label><textarea id="s_summaryDiscussion" rows="4" placeholder="Key points agreed, who was involved, what the resident understands"></textarea></div>
+    <div class="btn-row"><button class="btn btn-secondary" onclick="acpGoStep(6)">Back</button><button class="btn btn-primary" onclick="acpGoStep(8)">Next</button></div>
+  </div>
+
+  <!-- S8: End of Life Wishes -->
+  <div class="card hidden" id="s8">
+    <h2>End of Life Wishes</h2>
+    <p class="subtitle">If appropriate — what matters most at end of life</p>
+    <div class="form-group"><label>What would matter most</label><textarea id="s_eolMatters" rows="4" placeholder="Comfort, pain free, being told what's happening..."></textarea></div>
+    <div class="form-group"><label>Preferred place of care</label><textarea id="s_preferredPlace" rows="3" placeholder="Where does the resident want to be cared for?"></textarea></div>
+    <div class="form-group"><label>People I would want around me</label><textarea id="s_peopleAroundMe" rows="3" placeholder="Family, carers who know them well..."></textarea></div>
+    <div class="btn-row"><button class="btn btn-secondary" onclick="acpGoStep(7)">Back</button><button class="btn btn-primary" onclick="acpGoStep(9)">Next</button></div>
+  </div>
+
+  <!-- S9: Agreed Plan and Review -->
+  <div class="card hidden" id="s9">
+    <h2>Agreed Plan and Review</h2>
+    <p class="subtitle">Summary of wishes and review arrangements</p>
+    <div class="form-group"><label class="required">Summary of agreed wishes</label><textarea id="s_agreedWishes" rows="5" placeholder="3 to 5 short statements capturing core wishes"></textarea></div>
+    <div class="form-group"><label>Next review date</label><input type="text" id="s_reviewDate" value="Every month or as required"></div>
+    <div class="form-group"><label>Triggers for earlier review</label><textarea id="s_triggers" rows="4">Change in DNACPR status.
+Hospital admission.
+Acute deterioration.</textarea></div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="acpGoStep(8)">Back</button>
+      <button class="btn btn-download" onclick="acpDownloadStandard()">Download as Word Document</button>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- DEMENTIA ACP STEPS -->
+  <!-- ============================================ -->
+
+  <!-- D1: Resident Details -->
+  <div class="card hidden" id="d1">
+    <h2>Resident Details</h2>
+    <p class="subtitle">Basic information about the resident</p>
+    <button class="btn btn-paste" onclick="acpOpenPasteModal('dementia')">Paste from Claude</button>
+    <div class="form-row">
+      <div class="form-group"><label class="required">Resident name</label><input type="text" id="d_residentName" placeholder="e.g. John Smith"></div>
+      <div class="form-group"><label>Preferred name</label><input type="text" id="d_preferredName" placeholder="e.g. John"></div>
+    </div>
+    <div class="form-row three">
+      <div class="form-group"><label>Date of birth</label><input type="text" id="d_dob" placeholder="e.g. 12/03/1940"></div>
+      <div class="form-group"><label>Unit</label><select id="d_unit"><option value="">-- Select --</option><option value="Garnock">Garnock</option><option value="Eglinton">Eglinton</option></select></div>
+      <div class="form-group"><label>Room number</label><input type="text" id="d_roomNo" placeholder="e.g. 6"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Named nurse / key worker</label><input type="text" id="d_namedNurse" placeholder="e.g. Gloria Afriyie / Kirsty Austen"></div>
+      <div class="form-group"><label>Stage of dementia</label><input type="text" id="d_stageDementia" placeholder="e.g. Advanced Dementia"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-switch" onclick="acpSwitchType()">Switch ACP Type</button>
+      <button class="btn btn-example" onclick="acpLoadDementiaExample()">Load Example</button>
+      <button class="btn btn-primary" onclick="acpGoStep(2)">Next</button>
+    </div>
+  </div>
+
+  <!-- D2: Knowing the Person -->
+  <div class="card hidden" id="d2">
+    <h2>Knowing the Person</h2>
+    <p class="subtitle">Who this person is, their history, values, and what mattered before dementia</p>
+    <div class="form-group"><label>Life history and background</label><textarea id="d_lifeHistory" placeholder="Family, relationships, career, personality"></textarea></div>
+    <div class="form-group"><label>Values and beliefs</label><textarea id="d_valuesBeliefs" placeholder="What matters most. Faith, independence, family"></textarea></div>
+    <div class="form-group"><label>What mattered before dementia progressed</label><textarea id="d_beforeDementia" placeholder="Activities, routines, relationships that were important"></textarea></div>
+    <div class="btn-row"><button class="btn btn-secondary" onclick="acpGoStep(1)">Back</button><button class="btn btn-primary" onclick="acpGoStep(3)">Next</button></div>
+  </div>
+
+  <!-- D3: Comfort and Distress -->
+  <div class="card hidden" id="d3">
+    <h2>Comfort and Distress</h2>
+    <p class="subtitle">How to recognise when this person is comfortable or distressed</p>
+    <div class="form-group"><label>Signs of comfort</label><textarea id="d_signsComfort" placeholder="How do you know this person is settled?"></textarea></div>
+    <div class="form-group"><label>Signs of distress</label><textarea id="d_signsDistress" placeholder="What does distress look like?"></textarea></div>
+    <div class="form-group"><label>What helps reassure</label><textarea id="d_whatHelps" placeholder="What calms this person down?"></textarea></div>
+    <div class="form-group"><label>What should be avoided</label><textarea id="d_whatAvoid" placeholder="What makes things worse?"></textarea></div>
+    <div class="btn-row"><button class="btn btn-secondary" onclick="acpGoStep(2)">Back</button><button class="btn btn-primary" onclick="acpGoStep(4)">Next</button></div>
+  </div>
+
+  <!-- D4: Daily Care -->
+  <div class="card hidden" id="d4">
+    <h2>Daily Care Preferences</h2>
+    <p class="subtitle">How this person likes to be cared for day to day</p>
+    <div class="form-group"><label>Personal care approach</label><textarea id="d_personalCare" placeholder="How personal care should be delivered"></textarea></div>
+    <div class="form-group"><label>Food and drink preferences</label><textarea id="d_foodDrink" placeholder="Diet, preferences, texture, assistance needed"></textarea></div>
+    <div class="form-group"><label>Environment and sensory needs</label><textarea id="d_environment" placeholder="Noise, lighting, layout, stimulation level"></textarea></div>
+    <div class="btn-row"><button class="btn btn-secondary" onclick="acpGoStep(3)">Back</button><button class="btn btn-primary" onclick="acpGoStep(5)">Next</button></div>
+  </div>
+
+  <!-- D5: Health and Progression -->
+  <div class="card hidden" id="d5">
+    <h2>Health and Progression</h2>
+    <p class="subtitle">Current health, expected changes, and quality of life</p>
+    <div class="form-group"><label>Current health needs</label><textarea id="d_currentHealth" placeholder="Diagnoses, medications, current picture"></textarea></div>
+    <div class="form-group"><label>Expected progression</label><textarea id="d_expectedProgression" placeholder="What is likely to change?"></textarea></div>
+    <div class="form-group"><label>What does quality of life mean now?</label><textarea id="d_qualityOfLife" placeholder="What makes a good day?"></textarea></div>
+    <div class="btn-row"><button class="btn btn-secondary" onclick="acpGoStep(4)">Back</button><button class="btn btn-primary" onclick="acpGoStep(6)">Next</button></div>
+  </div>
+
+  <!-- D6: Anticipatory and Hospital -->
+  <div class="card hidden" id="d6">
+    <h2>Anticipatory and Hospital Decisions</h2>
+    <p class="subtitle">What to do if unwell, hospital views, escalation</p>
+    <div class="form-group"><label>Preferred approach if unwell</label><textarea id="d_approachUnwell" placeholder="GP review, treat in home, hospital?"></textarea></div>
+    <div class="form-group"><label>Comfort measures to prioritise</label><textarea id="d_comfortMeasures" placeholder="Pain relief, calm environment, dignity..."></textarea></div>
+    <div class="form-group"><label>Interventions to avoid</label><textarea id="d_interventionsAvoid" placeholder="What should NOT be done?"></textarea></div>
+    <div class="form-group"><label>Views on hospital admission</label><textarea id="d_hospitalViews" rows="3" placeholder="When is hospital acceptable?"></textarea></div>
+    <div class="form-group"><label>Escalation thresholds</label><textarea id="d_escalationThresholds" rows="3" placeholder="When should staff escalate urgently?"></textarea></div>
+    <div class="btn-row"><button class="btn btn-secondary" onclick="acpGoStep(5)">Back</button><button class="btn btn-primary" onclick="acpGoStep(7)">Next</button></div>
+  </div>
+
+  <!-- D7: CPR and End of Life -->
+  <div class="card hidden" id="d7">
+    <h2>CPR, Treatment and End of Life Care</h2>
+    <p class="subtitle">DNACPR, treatment, best-interest, comfort priorities</p>
+    <div class="form-row">
+      <div class="form-group"><label>DNACPR Status</label><select id="d_dnacpr"><option value="">Select...</option><option value="Yes">Yes - DNACPR in place</option><option value="No">No</option><option value="Not yet discussed">Not yet discussed</option></select></div>
+      <div class="form-group"><label>DNACPR Location</label><input type="text" id="d_dnacprLocation" placeholder="e.g. In file in duty room"></div>
+    </div>
+    <div class="form-group"><label>Treatment Escalation Plan</label><textarea id="d_treatmentPlan" rows="3" placeholder="Treat reversible conditions, focus on comfort..."></textarea></div>
+    <div class="form-group"><label>Best-interest summary</label><textarea id="d_bestInterest" rows="3" placeholder="Who was involved? Legal framework (POA, AWI Act)"></textarea></div>
+    <div class="form-group"><label>Comfort and end of life priorities</label><textarea id="d_comfortPriorities" placeholder="What matters most at end of life"></textarea></div>
+    <div class="form-group"><label>Preferred place of care</label><input type="text" id="d_preferredPlace" placeholder="e.g. Buckreddan Care Home"></div>
+    <div class="form-group"><label>Spiritual or cultural wishes</label><textarea id="d_spiritualWishes" rows="2" placeholder="None expressed, or specific requirements"></textarea></div>
+    <div class="btn-row"><button class="btn btn-secondary" onclick="acpGoStep(6)">Back</button><button class="btn btn-primary" onclick="acpGoStep(8)">Next</button></div>
+  </div>
+
+  <!-- D8: Agreed Plan -->
+  <div class="card hidden" id="d8">
+    <h2>Agreed Plan and Review</h2>
+    <p class="subtitle">Key priorities, review schedule, triggers</p>
+    <div class="form-group"><label>Key priorities for staff</label><textarea id="d_keyPriorities" rows="3" placeholder="Most important things for staff every day"></textarea></div>
+    <div class="form-group"><label>Review date</label><input type="text" id="d_reviewDate" value="Every month or when required"></div>
+    <div class="form-group"><label>Triggers for earlier review</label><textarea id="d_triggers" placeholder="Significant deterioration, change in DNACPR, amendment to ACP..."></textarea></div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="acpGoStep(7)">Back</button>
+      <button class="btn btn-download" onclick="acpDownloadDementia()">Download as Word Document</button>
+    </div>
+  </div>
+
+  <!-- PASTE MODAL -->
+  <div class="acp-modal-overlay hidden" id="acpPasteModal">
+    <div class="acp-modal">
+      <h2>Paste from Claude</h2>
+      <p>Copy the ACP output from Claude (the F command) and paste it all below. All fields will be filled automatically.</p>
+      <textarea id="acpPasteArea" placeholder="Paste Claude's ACP output here..."></textarea>
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="acpClosePasteModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="acpParsePaste()">Fill All Fields</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<!-- TAB 5: TRAFFIC LIGHT GENERATOR -->
+<div id="tab-traffic" class="tab-panel">
+<div class="container">
+  <div class="tl-header">
+    <h2>Traffic Light Generator</h2>
+    <p>Create printable traffic light sheets for residents' rooms</p>
+  </div>
+  <div class="tl-top-bar">
+    <div class="form-group">
+      <label>Resident Name</label>
+      <input type="text" id="tlResidentName" placeholder="e.g. John Smith">
+    </div>
+    <div class="form-group">
+      <label>Room Number</label>
+      <input type="text" id="tlRoomNo" placeholder="e.g. 12" style="max-width: 100px;">
+    </div>
+    <div class="form-group">
+      <label>Home Name</label>
+      <input type="text" id="tlHomeName" placeholder="e.g. Meadow View">
+    </div>
+  </div>
+  <div class="tl-inner-tab-bar">
+    <div class="tl-tab active" onclick="tlSwitchInnerTab('paste')">Paste from Claude</div>
+    <div class="tl-tab" onclick="tlSwitchInnerTab('manual')">Add Manually</div>
+  </div>
+  <div id="tl-tab-paste" class="tl-tab-content active">
+    <div class="tl-paste-area">
+      <h3>Paste Traffic Lights</h3>
+      <p>Copy the traffic light output from Claude and paste it below. You can paste multiple traffic lights at once.</p>
+      <textarea id="tlPasteInput" placeholder="Paste your traffic light(s) here..."></textarea>
+      <button class="btn btn-parse" onclick="tlParsePaste()">Add Traffic Lights</button>
+    </div>
+  </div>
+  <div id="tl-tab-manual" class="tl-tab-content">
+    <div class="btn-row">
+      <button class="btn btn-add" onclick="tlAddSection()">+ Add Section</button>
+      <button class="btn btn-add" onclick="tlAddBehaviourSection()">+ Add Behaviour Section</button>
+    </div>
+  </div>
+  <div id="tlSections"></div>
+  <div id="tlEmptyState" class="tl-empty-state">
+    <h3>No traffic lights yet</h3>
+    <p>Paste from Claude or add sections manually to get started.</p>
+  </div>
+  <div class="btn-row" style="justify-content: center; margin-top: 8px;">
+    <button class="btn btn-example" onclick="tlLoadExample()">Load Example (John Smith)</button>
+    <button class="btn btn-clear" onclick="tlClearAll()">Clear All</button>
+  </div>
+  <div class="tl-download-area" id="tlDownloadArea" style="display: none;">
+    <button class="btn btn-download" onclick="tlDownloadWord()">Download as Word Document</button>
+  </div>
+</div>
+</div>
+
 <script>
-// --- Tab switching ---
+// --- Tab switching (updated for data-tab attributes) ---
 function switchTab(tabId) {
   document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
   document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
   document.getElementById('tab-' + tabId).classList.add('active');
   document.querySelectorAll('.tab-btn').forEach(function(b) {
-    if (b.textContent.trim().toLowerCase() === tabId) b.classList.add('active');
+    if (b.getAttribute('data-tab') === tabId) b.classList.add('active');
   });
 }
 
@@ -1544,6 +1977,720 @@ function fillRtfSigDate(rtf, role, date) {
   return rtf;
 }
 
+
+</script>
+
+// ======================================================
+// ACP GENERATOR JAVASCRIPT
+// ======================================================
+<script>
+let acpType = null; // 'standard' or 'dementia'
+let acpPasteTarget = 'standard';
+let acpCurrentStep = 0;
+const acpStepCounts = { standard: 9, dementia: 8 };
+
+function acpVal(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+function acpEsc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
+
+function acpSelectType(type) {
+  acpType = type;
+  document.getElementById('typeChooser').classList.add('hidden');
+  document.getElementById('stepIndicator').classList.remove('hidden');
+  const header = document.getElementById('acpHeader');
+  if (type === 'dementia') {
+    header.classList.add('dementia');
+    document.getElementById('tab-acp').classList.add('dementia-mode');
+    document.getElementById('acpHeaderTitle').textContent = 'Advanced Dementia ACP Generator';
+    document.getElementById('acpHeaderSubtitle').textContent = 'Best-interest decision-making for people living with advanced dementia';
+  } else {
+    header.classList.remove('dementia');
+    document.getElementById('tab-acp').classList.remove('dementia-mode');
+    document.getElementById('acpHeaderTitle').textContent = 'ACP Generator';
+    document.getElementById('acpHeaderSubtitle').textContent = 'Future Care and Anticipatory Care Planning';
+  }
+  acpGoStep(1);
+}
+
+function acpSwitchType() {
+  document.querySelectorAll('#tab-acp .card').forEach(c => c.classList.add('hidden'));
+  document.getElementById('stepIndicator').classList.add('hidden');
+  document.getElementById('typeChooser').classList.remove('hidden');
+  document.getElementById('acpHeader').classList.remove('dementia');
+  document.getElementById('tab-acp').classList.remove('dementia-mode');
+  document.getElementById('acpHeaderTitle').textContent = 'ACP Generator';
+  document.getElementById('acpHeaderSubtitle').textContent = 'Future Care and Anticipatory Care Planning';
+  acpType = null;
+  acpCurrentStep = 0;
+}
+
+function acpGoStep(n) {
+  document.querySelectorAll('#tab-acp .card').forEach(c => c.classList.add('hidden'));
+  const prefix = acpType === 'standard' ? 's' : 'd';
+  const el = document.getElementById(prefix + n);
+  if (el) el.classList.remove('hidden');
+  acpCurrentStep = n;
+  acpUpdateDots();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function acpUpdateDots() {
+  const total = acpStepCounts[acpType];
+  const container = document.getElementById('stepIndicator');
+  container.innerHTML = '';
+  for (let i = 1; i <= total; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'step-dot' + (i === acpCurrentStep ? ' active' : '') + (i < acpCurrentStep ? ' completed' : '');
+    dot.textContent = i;
+    dot.onclick = () => acpGoStep(i);
+    container.appendChild(dot);
+  }
+}
+
+// ===== STANDARD DOWNLOAD =====
+function acpDownloadStandard() {
+  const r = (id) => val(id) || '[Not yet completed]';
+  const name = acpVal('s_residentName') || '[Resident Name]';
+  const unitRoom = (acpVal('s_unit') ? acpVal('s_unit') + ' ' : '') + (acpVal('s_roomNo') ? 'Rm ' + acpVal('s_roomNo') : '');
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head><meta charset="UTF-8"><style>
+@page{size:A4 portrait;margin:1.5cm 2cm}body{font-family:'Calibri',sans-serif;font-size:11pt;color:#000;line-height:1.4}
+h1{color:#0070C0;font-size:15pt;font-weight:bold;text-align:center;margin-bottom:2pt;border-bottom:2px solid #0070C0;padding-bottom:4pt}
+.sub{font-size:8pt;color:#666;text-align:center;margin-bottom:10pt;font-style:italic}
+h2{color:#0070C0;font-size:12pt;font-weight:bold;margin-top:10pt;margin-bottom:4pt;border-bottom:1px solid #0070C0;padding-bottom:2pt;page-break-after:avoid}
+h3{color:#0070C0;font-size:10pt;font-weight:bold;margin-top:6pt;margin-bottom:2pt;page-break-after:avoid}
+table.d{width:100%;border-collapse:collapse;margin-bottom:8pt}table.d td{border:1px solid #999;padding:4pt 6pt;font-size:10pt;vertical-align:top}
+table.d td.l{color:#0070C0;font-weight:bold;width:25%;background:#f5f8fc}
+.box{border:1px solid #ccc;padding:6pt 8pt;margin-bottom:6pt;font-size:10pt;line-height:1.4;page-break-inside:avoid}
+.abox{border:2px solid #0070C0;padding:8pt;margin:4pt 0 8pt;background:#f5f8fc}
+</style></head><body>
+<h1>Future Care &amp; Anticipatory Care Planning (ACP)</h1>
+<p class="sub">This document supports open, ongoing conversations between residents, families, and the care team about what matters most now and in the future. It is a living document and should be reviewed and updated as wishes or circumstances change.</p>
+<h2>Resident Details</h2>
+<table class="d"><tr><td class="l">Resident name:</td><td>${acpEsc(name)}</td><td class="l">Preferred name:</td><td>${acpEsc(r('s_preferredName'))}</td></tr>
+<tr><td class="l">Date of birth:</td><td>${acpEsc(r('s_dob'))}</td><td class="l">Unit / Room:</td><td>${acpEsc(unitRoom || '[Not yet completed]')}</td></tr>
+<tr><td class="l">Named nurse / key worker:</td><td colspan="3">${acpEsc(r('s_namedNurse'))}</td></tr>
+<tr><td class="l">People involved:</td><td colspan="2">${acpEsc(r('s_peopleInvolved'))}</td><td><b style="color:#0070C0">Date ACP started:</b> ${acpEsc(r('s_planDate'))}</td></tr></table>
+<h2>What Matters Most to Me</h2>
+<h3>What makes a good day for me</h3><div class="box">${acpEsc(r('s_goodDay'))}</div>
+<h3>What I value most right now</h3><div class="box">${acpEsc(r('s_valueMost'))}</div>
+<h3>What helps me feel safe and calm</h3><div class="box">${acpEsc(r('s_safeCalm'))}</div>
+<h3>What worries or upsets me</h3><div class="box">${acpEsc(r('s_worriesUpsets'))}</div>
+<h2>Wishes for Everyday Care</h2>
+<h3>Personal care preferences</h3><div class="box">${acpEsc(r('s_personalCare'))}</div>
+<h3>Food and drink preferences</h3><div class="box">${acpEsc(r('s_foodDrink'))}</div>
+<h3>Social, cultural or faith needs</h3><div class="box">${acpEsc(r('s_socialCultural'))}</div>
+<h3>Where I prefer to spend my time</h3><div class="box">${acpEsc(r('s_whereSpendTime'))}</div>
+<h2>Health and Treatment Decisions</h2>
+<h3>My understanding of my health</h3><div class="box">${acpEsc(r('s_understandHealth'))}</div>
+<h3>What is important to me if my health changes</h3><div class="box">${acpEsc(r('s_healthChanges'))}</div>
+<h3>Treatments I would or would not want</h3><div class="box">${acpEsc(r('s_treatments'))}</div>
+<h3>Decisions about hospital or escalation</h3><div class="box">${acpEsc(r('s_hospitalEscalation'))}</div>
+<h2>Anticipatory Planning</h2>
+<h3>Preferred approach if I become unwell</h3><div class="box">${acpEsc(r('s_approachUnwell'))}</div>
+<h3>Who to contact</h3><div class="box">${acpEsc(r('s_whoContact'))}</div>
+<h3>What helps me feel supported during illness</h3><div class="box">${acpEsc(r('s_supportedIllness'))}</div>
+<h2>Hospital Admission and Emergency Care</h2>
+<h3>Views on hospital admission</h3><div class="box">${acpEsc(r('s_hospitalViews'))}</div>
+<h3>Situations where admission may not be appropriate</h3><div class="box">${acpEsc(r('s_admissionNotAppropriate'))}</div>
+<h2>CPR and Treatment Escalation</h2>
+<table class="d"><tr><td class="l">DNACPR status:</td><td colspan="3">${acpEsc(r('s_dnacpr'))}</td></tr></table>
+<h3>Treatment Escalation Plan</h3><div class="box">${acpEsc(r('s_treatmentPlan'))}</div>
+<h3>Summary of discussion</h3><div class="box">${acpEsc(r('s_summaryDiscussion'))}</div>
+<h2>End of Life Wishes</h2>
+<h3>What would matter most</h3><div class="box">${acpEsc(r('s_eolMatters'))}</div>
+<h3>Preferred place of care</h3><div class="box">${acpEsc(r('s_preferredPlace'))}</div>
+<h3>People I would want around me</h3><div class="box">${acpEsc(r('s_peopleAroundMe'))}</div>
+<h2>Agreed Plan and Review</h2>
+<div class="abox">${acpEsc(r('s_agreedWishes'))}</div>
+<table class="d"><tr><td class="l">Next review date:</td><td>${acpEsc(r('s_reviewDate'))}</td></tr></table>
+<h3>Triggers for earlier review</h3><div class="box">${acpEsc(r('s_triggers'))}</div>
+<table class="d" style="margin-top:14pt"><tr><td class="l">Resident / Representative signature:</td><td style="height:25pt"></td><td class="l">Date:</td><td style="width:18%"></td></tr>
+<tr><td class="l">Staff signature:</td><td></td><td class="l">Date:</td><td></td></tr></table>
+</body></html>`;
+  acpDownloadFile(html, name + ' - ACP.doc');
+}
+
+// ===== DEMENTIA DOWNLOAD =====
+function acpDownloadDementia() {
+  const r = (id) => val(id) || '[Not yet completed]';
+  const name = acpVal('d_residentName') || '[Resident Name]';
+  const unitRoom = (acpVal('d_unit') ? acpVal('d_unit') + ' ' : '') + (acpVal('d_roomNo') ? 'Rm ' + acpVal('d_roomNo') : '');
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head><meta charset="UTF-8"><style>
+@page{size:A4 portrait;margin:1.5cm 2cm}body{font-family:'Calibri',sans-serif;font-size:11pt;color:#000;line-height:1.4}
+h1{color:#0070C0;font-size:15pt;font-weight:bold;text-align:center;margin-bottom:2pt;border-bottom:2px solid #0070C0;padding-bottom:4pt}
+.sub{font-size:8pt;color:#666;text-align:center;margin-bottom:10pt;font-style:italic}
+h2{color:#0070C0;font-size:12pt;font-weight:bold;margin-top:10pt;margin-bottom:4pt;border-bottom:1px solid #0070C0;padding-bottom:2pt;page-break-after:avoid}
+h3{color:#0070C0;font-size:10pt;font-weight:bold;margin-top:6pt;margin-bottom:2pt;page-break-after:avoid}
+table.d{width:100%;border-collapse:collapse;margin-bottom:8pt}table.d td{border:1px solid #999;padding:4pt 6pt;font-size:10pt;vertical-align:top}
+table.d td.l{color:#0070C0;font-weight:bold;width:28%;background:#f5f8fc}
+.box{border:1px solid #ccc;padding:6pt 8pt;margin-bottom:6pt;font-size:10pt;line-height:1.4;page-break-inside:avoid}
+</style></head><body>
+<h1>Advanced Dementia \u2013 Future Care &amp; Anticipatory Care Planning (ACP)</h1>
+<p class="sub">This document supports best-interest decision-making for people living with advanced dementia.<br>It focuses on comfort, dignity, and quality of life.</p>
+<table class="d"><tr><td class="l">Resident name:</td><td>${acpEsc(name)}</td><td class="l">Preferred name:</td><td>${acpEsc(r('d_preferredName'))}</td></tr>
+<tr><td class="l">Date of birth:</td><td>${acpEsc(r('d_dob'))}</td><td class="l">Unit / Room:</td><td>${acpEsc(unitRoom || '[Not yet completed]')}</td></tr>
+<tr><td class="l">Named nurse / key worker:</td><td colspan="3">${acpEsc(r('d_namedNurse'))}</td></tr>
+<tr><td class="l">Stage of dementia:</td><td colspan="3">${acpEsc(r('d_stageDementia'))}</td></tr></table>
+<h2>Knowing the Person</h2>
+<h3>Life history and background</h3><div class="box">${acpEsc(r('d_lifeHistory'))}</div>
+<h3>Values and beliefs</h3><div class="box">${acpEsc(r('d_valuesBeliefs'))}</div>
+<h3>What mattered before dementia progressed</h3><div class="box">${acpEsc(r('d_beforeDementia'))}</div>
+<h2>Comfort and Distress</h2>
+<h3>Signs of comfort</h3><div class="box">${acpEsc(r('d_signsComfort'))}</div>
+<h3>Signs of distress</h3><div class="box">${acpEsc(r('d_signsDistress'))}</div>
+<h3>What helps reassure</h3><div class="box">${acpEsc(r('d_whatHelps'))}</div>
+<h3>What should be avoided</h3><div class="box">${acpEsc(r('d_whatAvoid'))}</div>
+<h2>Daily Care Preferences</h2>
+<h3>Personal care approach</h3><div class="box">${acpEsc(r('d_personalCare'))}</div>
+<h3>Food and drink preferences</h3><div class="box">${acpEsc(r('d_foodDrink'))}</div>
+<h3>Environment and sensory needs</h3><div class="box">${acpEsc(r('d_environment'))}</div>
+<h2>Health and Progression</h2>
+<h3>Current health needs</h3><div class="box">${acpEsc(r('d_currentHealth'))}</div>
+<h3>Expected progression</h3><div class="box">${acpEsc(r('d_expectedProgression'))}</div>
+<h3>What does quality of life mean now?</h3><div class="box">${acpEsc(r('d_qualityOfLife'))}</div>
+<h2>Anticipatory Decisions</h2>
+<h3>Preferred approach if unwell</h3><div class="box">${acpEsc(r('d_approachUnwell'))}</div>
+<h3>Comfort measures to prioritise</h3><div class="box">${acpEsc(r('d_comfortMeasures'))}</div>
+<h3>Interventions to avoid</h3><div class="box">${acpEsc(r('d_interventionsAvoid'))}</div>
+<h2>Hospital and Emergency Care</h2>
+<h3>Views on hospital admission</h3><div class="box">${acpEsc(r('d_hospitalViews'))}</div>
+<h3>Escalation thresholds</h3><div class="box">${acpEsc(r('d_escalationThresholds'))}</div>
+<h2>CPR and Treatment Escalation</h2>
+<table class="d"><tr><td class="l">DNACPR status:</td><td>${acpEsc(r('d_dnacpr'))}</td><td class="l">DNACPR location:</td><td>${acpEsc(r('d_dnacprLocation'))}</td></tr></table>
+<h3>Treatment Escalation Plan</h3><div class="box">${acpEsc(r('d_treatmentPlan'))}</div>
+<h3>Best-interest summary</h3><div class="box">${acpEsc(r('d_bestInterest'))}</div>
+<h2>Comfort and End of Life Care</h2>
+<h3>Comfort priorities</h3><div class="box">${acpEsc(r('d_comfortPriorities'))}</div>
+<h3>Preferred place of care</h3><div class="box">${acpEsc(r('d_preferredPlace'))}</div>
+<h3>Spiritual or cultural wishes</h3><div class="box">${acpEsc(r('d_spiritualWishes'))}</div>
+<h2>Agreed Plan and Review</h2>
+<h3>Key priorities for staff</h3><div class="box">${acpEsc(r('d_keyPriorities'))}</div>
+<table class="d" style="margin-top:6pt"><tr><td class="l">Review date:</td><td>${acpEsc(r('d_reviewDate'))}</td></tr></table>
+<h3>Triggers for review</h3><div class="box">${acpEsc(r('d_triggers'))}</div>
+<table class="d" style="margin-top:14pt"><tr><td class="l">Resident / Representative signature:</td><td style="height:25pt"></td><td class="l">Date:</td><td style="width:18%"></td></tr>
+<tr><td class="l">Staff signature:</td><td></td><td class="l">Date:</td><td></td></tr></table>
+</body></html>`;
+  acpDownloadFile(html, name + ' - Dementia ACP.doc');
+}
+
+function acpDownloadFile(html, filename) {
+  const blob = new Blob([html], { type: 'application/msword' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename.replace(/[^a-zA-Z0-9 \-\.]/g, '');
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ===== PASTE FROM CLAUDE =====
+function acpOpenPasteModal(type) {
+  acpPasteTarget = type;
+  document.getElementById('acpPasteArea').value = '';
+  document.getElementById('acpPasteModal').classList.remove('hidden');
+}
+function acpClosePasteModal() {
+  document.getElementById('acpPasteModal').classList.add('hidden');
+}
+
+function acpParsePaste() {
+  const text = document.getElementById('acpPasteArea').value;
+  if (!text.trim()) return;
+
+  // Extract field value: looks for **LABEL:** or LABEL: followed by content until next label
+  function acpGetField(label) {
+    // Try bold format first: **LABEL:** content
+    const boldRe = new RegExp('\\*\\*' + label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ':\\*\\*\\s*([\\s\\S]*?)(?=\\n\\*\\*[A-Z]|$)', 'i');
+    let m = text.match(boldRe);
+    if (m) return m[1].trim();
+    // Try plain format: LABEL: content
+    const plainRe = new RegExp('^' + label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ':\\s*([\\s\\S]*?)(?=\\n[A-Z][A-Z ]+:|$)', 'im');
+    m = text.match(plainRe);
+    if (m) return m[1].trim();
+    return '';
+  }
+
+  function acpSetVal(id, value) {
+    const el = document.getElementById(id);
+    if (el && value) el.value = value;
+  }
+
+  function acpSetSelect(id, value) {
+    const el = document.getElementById(id);
+    if (!el || !value) return;
+    const lower = value.toLowerCase();
+    for (const opt of el.options) {
+      if (opt.value.toLowerCase().includes(lower) || lower.includes(opt.value.toLowerCase())) {
+        el.value = opt.value;
+        return;
+      }
+    }
+  }
+
+  if (acpPasteTarget === 'standard') {
+    acpSetVal('s_residentName', acpGetField('RESIDENT NAME'));
+    acpSetVal('s_preferredName', acpGetField('PREFERRED NAME'));
+    acpSetVal('s_dob', acpGetField('DATE OF BIRTH'));
+    // Unit parsing
+    const unitVal = acpGetField('UNIT');
+    if (unitVal.toLowerCase().includes('garnock')) acpSetSelect('s_unit', 'Garnock');
+    else if (unitVal.toLowerCase().includes('eglinton')) acpSetSelect('s_unit', 'Eglinton');
+    acpSetVal('s_roomNo', acpGetField('ROOM NUMBER'));
+    acpSetVal('s_namedNurse', acpGetField('NAMED NURSE / KEY WORKER'));
+    acpSetVal('s_planDate', acpGetField('DATE ACP STARTED') || acpGetField('DATE'));
+    acpSetVal('s_peopleInvolved', acpGetField('PEOPLE INVOLVED'));
+    acpSetVal('s_goodDay', acpGetField('WHAT MAKES A GOOD DAY FOR ME'));
+    acpSetVal('s_valueMost', acpGetField('WHAT I VALUE MOST RIGHT NOW'));
+    acpSetVal('s_safeCalm', acpGetField('WHAT HELPS ME FEEL SAFE AND CALM'));
+    acpSetVal('s_worriesUpsets', acpGetField('WHAT WORRIES OR UPSETS ME'));
+    acpSetVal('s_personalCare', acpGetField('PERSONAL CARE PREFERENCES'));
+    acpSetVal('s_foodDrink', acpGetField('FOOD AND DRINK PREFERENCES'));
+    acpSetVal('s_socialCultural', acpGetField('SOCIAL, CULTURAL OR FAITH NEEDS'));
+    acpSetVal('s_whereSpendTime', acpGetField('WHERE I PREFER TO SPEND MY TIME'));
+    acpSetVal('s_understandHealth', acpGetField('MY UNDERSTANDING OF MY HEALTH'));
+    acpSetVal('s_healthChanges', acpGetField('WHAT IS IMPORTANT TO ME IF MY HEALTH CHANGES'));
+    acpSetVal('s_treatments', acpGetField('TREATMENTS I WOULD OR WOULD NOT WANT'));
+    acpSetVal('s_hospitalEscalation', acpGetField('DECISIONS ABOUT HOSPITAL OR ESCALATION'));
+    acpSetVal('s_approachUnwell', acpGetField('PREFERRED APPROACH IF I BECOME UNWELL'));
+    acpSetVal('s_whoContact', acpGetField('WHO TO CONTACT'));
+    acpSetVal('s_supportedIllness', acpGetField('WHAT HELPS ME FEEL SUPPORTED DURING ILLNESS'));
+    acpSetVal('s_hospitalViews', acpGetField('VIEWS ON HOSPITAL ADMISSION'));
+    acpSetVal('s_admissionNotAppropriate', acpGetField('SITUATIONS WHERE ADMISSION MAY NOT BE APPROPRIATE'));
+    acpSetSelect('s_dnacpr', acpGetField('DNACPR STATUS') || acpGetField('DNACPR'));
+    acpSetVal('s_dnacprLocation', acpGetField('DNACPR LOCATION'));
+    acpSetVal('s_treatmentPlan', acpGetField('TREATMENT ESCALATION PLAN'));
+    acpSetVal('s_summaryDiscussion', acpGetField('SUMMARY OF DISCUSSION'));
+    acpSetVal('s_eolMatters', acpGetField('WHAT WOULD MATTER MOST'));
+    acpSetVal('s_preferredPlace', acpGetField('PREFERRED PLACE OF CARE'));
+    acpSetVal('s_peopleAroundMe', acpGetField('PEOPLE I WOULD WANT AROUND ME'));
+    acpSetVal('s_agreedWishes', acpGetField('SUMMARY OF AGREED WISHES'));
+    acpSetVal('s_reviewDate', acpGetField('NEXT REVIEW DATE'));
+    acpSetVal('s_triggers', acpGetField('TRIGGERS FOR EARLIER REVIEW'));
+  } else {
+    acpSetVal('d_residentName', acpGetField('RESIDENT NAME'));
+    acpSetVal('d_preferredName', acpGetField('PREFERRED NAME'));
+    acpSetVal('d_dob', acpGetField('DATE OF BIRTH'));
+    const unitVal = acpGetField('UNIT');
+    if (unitVal.toLowerCase().includes('garnock')) acpSetSelect('d_unit', 'Garnock');
+    else if (unitVal.toLowerCase().includes('eglinton')) acpSetSelect('d_unit', 'Eglinton');
+    acpSetVal('d_roomNo', acpGetField('ROOM NUMBER'));
+    acpSetVal('d_namedNurse', acpGetField('NAMED NURSE / KEY WORKER'));
+    acpSetVal('d_stageDementia', acpGetField('STAGE OF DEMENTIA'));
+    acpSetVal('d_lifeHistory', acpGetField('LIFE HISTORY AND BACKGROUND'));
+    acpSetVal('d_valuesBeliefs', acpGetField('VALUES AND BELIEFS'));
+    acpSetVal('d_beforeDementia', acpGetField('WHAT MATTERED BEFORE DEMENTIA PROGRESSED'));
+    acpSetVal('d_signsComfort', acpGetField('SIGNS OF COMFORT'));
+    acpSetVal('d_signsDistress', acpGetField('SIGNS OF DISTRESS'));
+    acpSetVal('d_whatHelps', acpGetField('WHAT HELPS REASSURE'));
+    acpSetVal('d_whatAvoid', acpGetField('WHAT SHOULD BE AVOIDED'));
+    acpSetVal('d_personalCare', acpGetField('PERSONAL CARE APPROACH'));
+    acpSetVal('d_foodDrink', acpGetField('FOOD AND DRINK PREFERENCES'));
+    acpSetVal('d_environment', acpGetField('ENVIRONMENT AND SENSORY NEEDS'));
+    acpSetVal('d_currentHealth', acpGetField('CURRENT HEALTH NEEDS'));
+    acpSetVal('d_expectedProgression', acpGetField('EXPECTED PROGRESSION'));
+    acpSetVal('d_qualityOfLife', acpGetField('WHAT DOES QUALITY OF LIFE MEAN NOW'));
+    acpSetVal('d_approachUnwell', acpGetField('PREFERRED APPROACH IF UNWELL'));
+    acpSetVal('d_comfortMeasures', acpGetField('COMFORT MEASURES TO PRIORITISE'));
+    acpSetVal('d_interventionsAvoid', acpGetField('INTERVENTIONS TO AVOID'));
+    acpSetVal('d_hospitalViews', acpGetField('VIEWS ON HOSPITAL ADMISSION'));
+    acpSetVal('d_escalationThresholds', acpGetField('ESCALATION THRESHOLDS'));
+    acpSetSelect('d_dnacpr', acpGetField('DNACPR STATUS') || acpGetField('DNACPR'));
+    acpSetVal('d_dnacprLocation', acpGetField('DNACPR LOCATION'));
+    acpSetVal('d_treatmentPlan', acpGetField('TREATMENT ESCALATION PLAN'));
+    acpSetVal('d_bestInterest', acpGetField('BEST-INTEREST SUMMARY'));
+    acpSetVal('d_comfortPriorities', acpGetField('COMFORT PRIORITIES'));
+    acpSetVal('d_preferredPlace', acpGetField('PREFERRED PLACE OF CARE'));
+    acpSetVal('d_spiritualWishes', acpGetField('SPIRITUAL OR CULTURAL WISHES'));
+    acpSetVal('d_keyPriorities', acpGetField('KEY PRIORITIES FOR STAFF'));
+    acpSetVal('d_reviewDate', acpGetField('REVIEW DATE'));
+    acpSetVal('d_triggers', acpGetField('TRIGGERS FOR REVIEW') || acpGetField('TRIGGERS FOR EARLIER REVIEW'));
+  }
+
+  acpClosePasteModal();
+  alert('Fields filled! Check each step to review and edit before downloading.');
+}
+
+// ===== EXAMPLES =====
+function acpLoadStandardExample() {
+  document.getElementById('s_residentName').value = 'David McLeod';
+  document.getElementById('s_preferredName').value = 'David';
+  document.getElementById('s_dob').value = '05/04/1959';
+  document.getElementById('s_unit').value = 'Eglinton';
+  document.getElementById('s_roomNo').value = '7';
+  document.getElementById('s_namedNurse').value = 'Gloria Afriyie / Kirsty Austen';
+  document.getElementById('s_planDate').value = '17/02/2026';
+  document.getElementById('s_peopleInvolved').value = 'David McLeod, Kirsty Austen';
+  document.getElementById('s_goodDay').value = "Taking my radio with me and listening to music in Blue Brae Lounge. Enjoying my cigarettes. Being able to walk around the unit freely.";
+  document.getElementById('s_valueMost').value = "My independence and my choices.";
+  document.getElementById('s_safeCalm').value = "Being able to walk around the unit freely. Being spoken to with respect.";
+  document.getElementById('s_worriesUpsets').value = "When I don't get a smoke when I want. When my access to areas of my home is restricted, for example carpets being shampooed.";
+  document.getElementById('s_personalCare').value = "I don't accept personal care and I don't like being asked. I will let carers know if I want help.";
+  document.getElementById('s_foodDrink').value = "Normal diet and fluids. I like to be in charge of my meal times. I often like to eat my meals on the couches in the dining room.";
+  document.getElementById('s_socialCultural').value = "None. I don't believe in all that.";
+  document.getElementById('s_whereSpendTime').value = "In Blue Brae Lounge, the Smoke Room, or in my room making jigsaws.";
+  document.getElementById('s_understandHealth').value = "I understand I have a brain injury. It doesn't affect how I live my life. I can still make my own choices.";
+  document.getElementById('s_healthChanges').value = "That I'm told about any changes and my choices are respected.";
+  document.getElementById('s_treatments').value = "Treatment for treatable illnesses.";
+  document.getElementById('s_hospitalEscalation').value = "Should be made on what benefits me.";
+  document.getElementById('s_approachUnwell').value = "Assessed in home where I am comfortable. Contact GP but let me know what's happening.";
+  document.getElementById('s_whoContact').value = "My social worker who supports me.";
+  document.getElementById('s_supportedIllness').value = "Being told what's happening with my care. Carers respecting my decisions not to accept personal care.";
+  document.getElementById('s_hospitalViews').value = "I don't mind going to hospital if it makes me better. I don't like to though.";
+  document.getElementById('s_admissionNotAppropriate').value = "When I can be looked after here at home.";
+  document.getElementById('s_dnacpr').value = 'No - Always resuscitate';
+  document.getElementById('s_dnacprLocation').value = '';
+  document.getElementById('s_treatmentPlan').value = "Call GP if I become unwell. Ensure I am pain free. Let me know any changes or advice so I can make up my own mind what I want to happen.";
+  document.getElementById('s_summaryDiscussion').value = "What I don't want to happen, staff will respect my choices. I understand.";
+  document.getElementById('s_eolMatters').value = "To be comfortable and pain free. To be told what's happening.";
+  document.getElementById('s_preferredPlace').value = "At home in Buckreddan.";
+  document.getElementById('s_peopleAroundMe').value = "Carers that know me well.";
+  document.getElementById('s_agreedWishes').value = "Respect my choices.\nKeep me informed.\nEnsure I am pain free and comfortable.";
+  document.getElementById('s_reviewDate').value = 'Every month or as required';
+  document.getElementById('s_triggers').value = 'Change in DNACPR status.\nHospital admission.\nAcute deterioration.';
+}
+
+function acpLoadDementiaExample() {
+  document.getElementById('d_residentName').value = 'John Smith';
+  document.getElementById('d_preferredName').value = 'John';
+  document.getElementById('d_dob').value = '15/06/1938';
+  document.getElementById('d_unit').value = 'Garnock';
+  document.getElementById('d_roomNo').value = '4';
+  document.getElementById('d_namedNurse').value = 'Sarah Mitchell / Karen Douglas';
+  document.getElementById('d_stageDementia').value = 'Advanced Dementia';
+  document.getElementById('d_lifeHistory').value = 'John is a private person and has been all his life. He has close relationships with his two daughters Margaret and Susan. He worked as a joiner for over 40 years. He enjoys talking about football and his time in the army.';
+  document.getElementById('d_valuesBeliefs').value = 'John values privacy, dignity and comfort. He has always been a quiet, independent man who preferred his own company to crowds.';
+  document.getElementById('d_beforeDementia').value = 'Being independent, going for walks, watching football, doing crosswords, spending time with his daughters at weekends.';
+  document.getElementById('d_signsComfort').value = 'Calm facial expressions, sitting quietly with others at meals, engaging in conversation about football, without agitation.';
+  document.getElementById('d_signsDistress').value = 'Repetitive calling out, pulling at his clothes, trying to get up without support, increased restlessness in the late afternoon.';
+  document.getElementById('d_whatHelps').value = 'Calm tone, slow approach, offer a cup of tea first, familiar faces, talking about football or his joinery work, quiet environment, Namaste sessions.';
+  document.getElementById('d_whatAvoid').value = 'Approaching from behind, loud or busy environments, multiple instructions at once, unfamiliar staff without introduction.';
+  document.getElementById('d_personalCare').value = 'One to one calm unhurried support. Clear short explanations of each step. Shower preferred. Re-offer care later if refused.';
+  document.getElementById('d_foodDrink').value = 'Normal diet and fluids. Sweet foods preferred. Cup of tea with milk and one sugar. Eats well at breakfast, appetite dips at teatime.';
+  document.getElementById('d_environment').value = 'Clutter free environment, consistent furniture positioning, low stimulation at night. Benefits from Namaste sessions in the afternoon.';
+  document.getElementById('d_currentHealth').value = 'Advanced dementia with sundowning. Managed with Lorazepam 0.5mg PRN. Mobility declining, uses zimmer frame with one staff. DNACPR in place.';
+  document.getElementById('d_expectedProgression').value = 'Cognitive decline likely to continue. Increased confusion and possible further reduction in mobility and insight over time.';
+  document.getElementById('d_qualityOfLife').value = 'Feeling safe, being calm, having daughters visit, familiar surroundings, sweet treats and cups of tea, conversations about football.';
+  document.getElementById('d_approachUnwell').value = 'Assessment for reversible causes. GP review promptly. Hospital only if clinically appropriate and recovery likely.';
+  document.getElementById('d_comfortMeasures').value = 'Pain relief, calm environment, dignity, familiar staff, reassurance, mouth care, skin care.';
+  document.getElementById('d_interventionsAvoid').value = 'Unnecessary distressing transfers to hospital. Invasive procedures unlikely to benefit. Overstimulation.';
+  document.getElementById('d_hospitalViews').value = 'Acceptable if condition is reversible and recovery likely. Otherwise treat in care home with comfort focus.';
+  document.getElementById('d_escalationThresholds').value = 'Rapid deterioration, unresponsive state, uncontrolled pain, suspected infection, repeated falls with injury.';
+  document.getElementById('d_dnacpr').value = 'Yes';
+  document.getElementById('d_dnacprLocation').value = 'Original form kept in file in duty room';
+  document.getElementById('d_treatmentPlan').value = 'Treat reversible conditions. Focus on comfort. If deterioration reflects advanced disease progression, prioritise comfort and dignity.';
+  document.getElementById('d_bestInterest').value = 'Decisions made in consultation with daughters under Power of Attorney (Welfare). Best-interest framework followed in line with Adults with Incapacity Act.';
+  document.getElementById('d_comfortPriorities').value = 'Remain at Buckreddan. Daughters present. Calm environment. Dignity. Symptom control. Gentle care. Avoid unnecessary hospital admission.';
+  document.getElementById('d_preferredPlace').value = 'Buckreddan Care Home';
+  document.getElementById('d_spiritualWishes').value = 'None expressed.';
+  document.getElementById('d_keyPriorities').value = 'Maintain comfort and dignity. Encourage nutrition and fluids. Support independence where possible.';
+  document.getElementById('d_reviewDate').value = 'Every month or when required';
+  document.getElementById('d_triggers').value = 'Significant deterioration in cognition, mobility or awareness.\nChange in DNACPR status.\nAmendment to ACP.\nMajor clinical review.';
+}
+</script>
+
+
+// ======================================================
+// TRAFFIC LIGHT GENERATOR JAVASCRIPT
+// ======================================================
+<script>
+let tlSections = [];
+let tlSectionCounter = 0;
+
+const TL_TL_SECTION_TYPES = [
+  'General / Cognition', 'Behaviour / Stress and Distress', 'Falls Risk', 'Mobility',
+  'Nutrition', 'Medication', 'Personal Care', 'Continence', 'Skin Integrity',
+  'Sleep', 'Breathing / COPD', 'Diabetic', 'Future Care', 'Addiction',
+  'Self-Harm / Suicidal', 'Absconding / Wandering', 'Epilepsy / Seizures',
+  'Communication', 'Pain Management', 'Psychological / Emotional', 'Other'
+];
+
+function tlSwitchInnerTab(tab) {
+  document.querySelectorAll('#tab-traffic .tl-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('#tab-traffic .tl-tab-content').forEach(t => t.classList.remove('active'));
+  if (tab === 'paste') {
+    document.querySelectorAll('#tab-traffic .tl-tab')[0].classList.add('active');
+    document.getElementById('tl-tab-paste').classList.add('active');
+  } else {
+    document.querySelectorAll('#tab-traffic .tl-tab')[1].classList.add('active');
+    document.getElementById('tl-tab-manual').classList.add('active');
+  }
+}
+
+function tlParsePaste() {
+  const text = document.getElementById('tlPasteInput').value.trim();
+  if (!text) return;
+
+  const tlMarkers = [...text.matchAll(/\u{1F6A6}\s*\**\s*((?:Behaviour\s+)?Traffic\s+Light\s*:?\s*[^\n*]+)\s*\**/giu)];
+
+  if (tlMarkers.length === 0) {
+    alert('No traffic lights found. Make sure the text contains \u{1F6A6} Traffic Light: headings.');
+    return;
+  }
+
+  for (let i = 0; i < tlMarkers.length; i++) {
+    const marker = tlMarkers[i];
+    const headerText = marker[1].trim();
+    const startPos = marker.index + marker[0].length;
+    const endPos = (i + 1 < tlMarkers.length) ? tlMarkers[i + 1].index : text.length;
+    const block = text.substring(startPos, endPos).trim();
+
+    let sectionName = headerText.replace(/^(?:Behaviour\s+)?Traffic\s+Light\s*:?\s*/i, '').replace(/\*\*/g, '').trim();
+    const isBehaviour = /behaviour/i.test(headerText);
+
+    if (isBehaviour) {
+      const greenMatch = block.match(/\u{1F7E2}[^\n]*\n([\s\S]*?)(?=\u{1F7E1}|$)/u);
+      const amberMatch = block.match(/\u{1F7E1}[^\n]*\n([\s\S]*?)(?=\u{1F534}|$)/u);
+      const redMatch = block.match(/\u{1F534}[^\n]*\n([\s\S]*?)$/u);
+
+      tlAddBehaviourSection(sectionName,
+        greenMatch ? greenMatch[1].trim() : '',
+        amberMatch ? amberMatch[1].trim() : '',
+        redMatch ? redMatch[1].trim() : ''
+      );
+    } else {
+      const redMatch = block.match(/\u{1F534}[^\n]*\n([\s\S]*?)(?=\u{1F7E1}|$)/u);
+      const amberMatch = block.match(/\u{1F7E1}[^\n]*\n([\s\S]*?)(?=\u{1F7E2}|$)/u);
+      const greenMatch = block.match(/\u{1F7E2}[^\n]*\n([\s\S]*?)$/u);
+
+      tlAddSection(sectionName,
+        redMatch ? redMatch[1].trim() : '',
+        amberMatch ? amberMatch[1].trim() : '',
+        greenMatch ? greenMatch[1].trim() : ''
+      );
+    }
+  }
+
+  document.getElementById('tlPasteInput').value = '';
+}
+
+function tlAddSection(name, red, amber, green) {
+  const id = tlSectionCounter++;
+  tlSections.push({ id, type: 'standard', name: name || '', red: red || '', amber: amber || '', green: green || '' });
+  tlRenderSections();
+}
+
+function tlAddBehaviourSection(name, green, amber, red) {
+  const id = tlSectionCounter++;
+  tlSections.push({ id, type: 'behaviour', name: name || 'Behaviour / Stress and Distress', green: green || '', amber: amber || '', red: red || '' });
+  tlRenderSections();
+}
+
+function tlRemoveSection(id) {
+  sections = tlSections.filter(s => s.id !== id);
+  tlRenderSections();
+}
+
+function tlUpdateSection(id, field, value) {
+  const s = tlSections.find(s => s.id === id);
+  if (s) s[field] = value;
+  tlUpdateDownloadBtn();
+}
+
+function tlRenderSections() {
+  const container = document.getElementById('tlSections');
+  const empty = document.getElementById('tlEmptyState');
+
+  if (tlSections.length === 0) {
+    container.innerHTML = '';
+    empty.style.display = 'block';
+    tlUpdateDownloadBtn();
+    return;
+  }
+
+  empty.style.display = 'none';
+  container.innerHTML = tlSections.map(s => {
+    if (s.type === 'behaviour') {
+      return `
+        <div class="tl-section-card">
+          <h3>
+            <span>Behaviour Traffic Light</span>
+            <button class="btn btn-remove" onclick="tlRemoveSection(${s.id})">Remove</button>
+          </h3>
+          <div class="tl-section-type-row">
+            <div class="form-group">
+              <label>Section Name</label>
+              <input type="text" value="${tlEsc(s.name)}" onchange="tlUpdateSection(${s.id}, 'name', this.value)">
+            </div>
+          </div>
+          <div class="colour-group">
+            <div class="colour-label"><span class="colour-dot green"></span> GREEN: Keeping me well (Prevention)</div>
+            <textarea onchange="tlUpdateSection(${s.id}, 'green', this.value)">${tlEsc(s.green)}</textarea>
+          </div>
+          <div class="colour-group">
+            <div class="colour-label"><span class="colour-dot amber"></span> AMBER: Early signs I'm struggling</div>
+            <textarea onchange="tlUpdateSection(${s.id}, 'amber', this.value)">${tlEsc(s.amber)}</textarea>
+          </div>
+          <div class="colour-group">
+            <div class="colour-label"><span class="colour-dot red"></span> RED: Crisis / What to do now</div>
+            <textarea onchange="tlUpdateSection(${s.id}, 'red', this.value)">${tlEsc(s.red)}</textarea>
+          </div>
+        </div>`;
+    } else {
+      return `
+        <div class="tl-section-card">
+          <h3>
+            <span>Traffic Light</span>
+            <button class="btn btn-remove" onclick="tlRemoveSection(${s.id})">Remove</button>
+          </h3>
+          <div class="tl-section-type-row">
+            <div class="form-group">
+              <label>Section Name</label>
+              <input type="text" value="${tlEsc(s.name)}" onchange="tlUpdateSection(${s.id}, 'name', this.value)" list="sectionTypes">
+            </div>
+          </div>
+          <div class="colour-group">
+            <div class="colour-label"><span class="colour-dot red"></span> Things you MUST know about me</div>
+            <textarea onchange="tlUpdateSection(${s.id}, 'red', this.value)">${tlEsc(s.red)}</textarea>
+          </div>
+          <div class="colour-group">
+            <div class="colour-label"><span class="colour-dot amber"></span> Things that are IMPORTANT to me</div>
+            <textarea onchange="tlUpdateSection(${s.id}, 'amber', this.value)">${tlEsc(s.amber)}</textarea>
+          </div>
+          <div class="colour-group">
+            <div class="colour-label"><span class="colour-dot green"></span> My likes and preferences</div>
+            <textarea onchange="tlUpdateSection(${s.id}, 'green', this.value)">${tlEsc(s.green)}</textarea>
+          </div>
+        </div>`;
+    }
+  }).join('');
+
+  tlUpdateDownloadBtn();
+}
+
+function tlUpdateDownloadBtn() {
+  document.getElementById('tlDownloadArea').style.display = tlSections.length > 0 ? 'block' : 'none';
+}
+
+function tlEsc(str) {
+  return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function tlNl2br(str) {
+  return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+}
+
+/* ── Word document builder ─────────────────────────────── */
+/* Matches the exact structure of paula_traffic_lights.docx:
+   - No tables, just styled paragraphs
+   - Paragraph background shading for colored bars
+   - keepNext/keepLines on every paragraph to prevent page breaks within sections
+   - Arial font throughout
+   - Colors: Red #CC0000, Amber #E6A800, Green #2E7D32, Headings #2E75B6
+*/
+
+const TL_KN = 'page-break-inside:avoid;page-break-after:avoid;'; // keepNext+keepLines equivalent
+
+function tlBar(bg, label) {
+  return `<p style="${TL_KN}background:${bg};color:#fff;font-family:Arial,sans-serif;font-size:11pt;font-weight:bold;padding:4pt 6pt;margin:4pt 0 0 0;">${label}</p>`;
+}
+
+function tlContent(text) {
+  return `<p style="${TL_KN}font-family:Arial,sans-serif;font-size:10pt;font-weight:normal;line-height:1.35;margin:2pt 0 4pt 12pt;">${text}</p>`;
+}
+
+function tlDownloadWord() {
+  const residentName = document.getElementById('tlResidentName').value || '[Resident Name]';
+  const roomNo = document.getElementById('tlRoomNo').value || '';
+  const homeName = document.getElementById('tlHomeName').value || '';
+
+  let body = '';
+
+  for (const s of tlSections) {
+    const sName = tlEsc(s.name);
+
+    // Wrap each section in a borderless table to prevent page breaks within
+    body += `<table style="width:100%;border:none;border-collapse:collapse;page-break-inside:avoid;"><tr><td style="border:none;padding:0;">`;
+
+    // Section heading — blue with bottom border
+    body += `<p style="font-family:Arial,sans-serif;font-size:14pt;font-weight:bold;color:#2E75B6;border-bottom:1pt solid #2E75B6;padding-bottom:2pt;margin:14pt 0 4pt 0;">${sName}</p>`;
+
+    // All sections use standard Red, Amber, Green format
+    body += tlBar('#CC0000', '&#x1F534;  Things you MUST know about me');
+    body += tlContent(tlNl2br(s.red));
+    body += tlBar('#E6A800', '&#x1F7E1;  Things that are IMPORTANT to me');
+    body += tlContent(tlNl2br(s.amber));
+    body += tlBar('#2E7D32', '&#x1F7E2;  My likes and preferences');
+    body += tlContent(tlNl2br(s.green));
+
+    body += `</td></tr></table>`;
+  }
+
+  const roomLine = roomNo ? ` (Room ${tlEsc(roomNo)})` : '';
+
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head><meta charset="UTF-8">
+<style>
+@page{size:A4 portrait;margin:1.5cm 2cm 1.5cm 2cm;}
+body{font-family:Arial,sans-serif;font-size:10pt;color:#000;line-height:1.35;}
+</style></head>
+<body>
+<p style="font-family:Arial,sans-serif;font-size:18pt;font-weight:bold;color:#2E75B6;text-align:center;margin:0 0 2pt 0;border-bottom:2pt solid #2E75B6;padding-bottom:4pt;">${tlEsc(residentName)}${roomLine} &mdash; Traffic Light System</p>
+<p style="font-family:Arial,sans-serif;font-size:11pt;font-style:italic;color:#666;text-align:center;margin:0 0 12pt 0;">Quick Reference for All Care Sections</p>
+${body}
+</body></html>`;
+
+  const blob = new Blob([html], { type: 'application/msword' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${residentName} - Traffic Lights.doc`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function tlLoadExample() {
+  document.getElementById('tlResidentName').value = 'John Smith';
+  document.getElementById('tlRoomNo').value = '12';
+  document.getElementById('tlHomeName').value = 'Meadow View Care Home';
+
+  tlSections = [];
+  tlSectionCounter = 0;
+
+  tlAddSection('Sleep',
+    'I need help getting comfortable at night. I am cared for in bed and need two staff for all repositioning. I am on a four hourly repositional plan. I have a pressure relief mattress and a profiling bed. Check my skin every time I am repositioned.',
+    'I like my room warm but no too hot. I prefer my door left slightly open wi the hall light on. If I am unsettled, sit wi me for a wee while and talk quietly. Check if I am in pain before assuming I just cannae sleep.',
+    'A cup of tea before bed helps me settle. I like Radio 2 on low in the background. I enjoy a wee chat about the day before I go tae sleep. My favourite blanket is the blue one, make sure it is always on my bed.'
+  );
+
+  tlAddSection('Psychological / Emotional',
+    'I have significant psychological and emotional needs linked tae my moderate learnin disability, chronic depression, and past trauma includin bereavement and abuse. My mood can change rapidly. I am on a traffic light behavioural system. I take diazepam 2mg three times daily and quetiapine 25mg (one morning, three at night) tae support my emotional regulation. Missin or delayin doses can directly affect my mood. I have no PRN for distress. Never use any form of restraint wi me. Check the traffic light before any interaction.',
+    'On green, have a blether and enjoy the connection. On amber, stay calm, be clear, and reassure me patiently. On red, leave my room and give me space. If I am tellin different staff different things, verify wi each other and the nurse before actin. If my mood is lower or I am more withdrawn for more than a couple of days, tell the nurse. Always think about what triggered my distress and check for physical causes like pain, infection, or constipation.',
+    'When I am settled I am warm, chatty, and callin folk hen, darlin, honey, and sweetheart. I love my online shoppin, crafts, make up, and talkin about my mum. When I buzz tae apologise after an episode, meet me wi reassurance and kindness, hen. That is when the trust is built.'
+  );
+
+  tlAddBehaviourSection('Behaviour / Stress and Distress',
+    'Keep my routine consistent. Talk tae me calmly and clearly. Give me choices where ye can. Make sure I have got something tae do through the day. Check in wi me regularly, even just a wee chat at my door.',
+    'I start getting louder. I repeat myself. I pace or pick at my clothes. I start tellin different staff different things. I get tearful or say I want tae go home. Stay calm, lower your voice, reassure me. Offer a change of scenery or a quiet activity.',
+    'I am shoutin, swearin, or throwin things. I have locked my door or I am refusin all contact. Leave my room immediately. Give me space. Tell the nurse straight away. Do not try tae reason wi me when I am in crisis. Wait until I buzz or come tae you. When I do, meet me wi kindness.'
+  );
+}
+
+function tlClearAll() {
+  tlSections = [];
+  tlSectionCounter = 0;
+  document.getElementById('tlResidentName').value = '';
+  document.getElementById('tlRoomNo').value = '';
+  document.getElementById('tlHomeName').value = '';
+  document.getElementById('tlPasteInput').value = '';
+  tlRenderSections();
+}
+
+// Datalist for section types
+document.addEventListener('DOMContentLoaded', () => {
+  const dl = document.createElement('datalist');
+  dl.id = 'tlSectionTypes';
+  TL_SECTION_TYPES.forEach(t => {
+    const opt = document.createElement('option');
+    opt.value = t;
+    dl.appendChild(opt);
+  });
+  document.body.appendChild(dl);
+  tlRenderSections();
+});
+</script>
 
 </script>
 
