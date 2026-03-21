@@ -1942,16 +1942,32 @@ function rtfEscape(str) {
 }
 
 function insertRtfCellValue(rtf, label, value) {
-  // RTF table: find the label, then find \cell after it (label cell end),
-  // then find the next \cell (value cell end), insert text before it
   var labelIdx = rtf.indexOf(label);
   if (labelIdx === -1) return rtf;
-  var labelCellEnd = rtf.indexOf('\cell', labelIdx + label.length);
+  var pos = labelIdx + label.length;
+  // Find first \cell (end of label cell), skipping \cellx
+  var labelCellEnd = -1;
+  while (pos < rtf.length) {
+    pos = rtf.indexOf('cell', pos);
+    if (pos === -1) break;
+    var ch = rtf.charAt(pos + 4);
+    if (ch !== 'x' && ch !== 'X' && (ch < 'a' || ch > 'z') && (ch < 'A' || ch > 'Z')) { labelCellEnd = pos; break; }
+    pos += 4;
+  }
   if (labelCellEnd === -1) return rtf;
-  var nextCellEnd = rtf.indexOf('\cell', labelCellEnd + 5);
-  if (nextCellEnd === -1) return rtf;
+  // Find next \cell (end of value cell), skipping \cellx
+  pos = labelCellEnd + 5;
+  var valueCellEnd = -1;
+  while (pos < rtf.length) {
+    pos = rtf.indexOf('cell', pos);
+    if (pos === -1) break;
+    var ch2 = rtf.charAt(pos + 4);
+    if (ch2 !== 'x' && ch2 !== 'X' && (ch2 < 'a' || ch2 > 'z') && (ch2 < 'A' || ch2 > 'Z')) { valueCellEnd = pos; break; }
+    pos += 4;
+  }
+  if (valueCellEnd === -1) return rtf;
   var rtfValue = rtfEscape(value);
-  rtf = rtf.substring(0, nextCellEnd) + rtfValue + rtf.substring(nextCellEnd);
+  rtf = rtf.substring(0, valueCellEnd) + ' ' + rtfValue + rtf.substring(valueCellEnd);
   return rtf;
 }
 
