@@ -1761,7 +1761,7 @@ function insertTextAfterHeading(xml, heading, text) {
   for (var i = 0; i < lines.length; i++) {
     if (lines[i].trim()) {
       if (i > 0) {
-        newContent += '<w:r>' + rPr + '<w:br/></w:r>';
+        newContent += '<w:r>' + rPr + '<w:br/></w:r><w:r>' + rPr + '<w:br/></w:r>';
       }
       newContent += '<w:r>' + rPr + '<w:t xml:space="preserve">' + escapeXml(lines[i]) + '</w:t></w:r>';
     }
