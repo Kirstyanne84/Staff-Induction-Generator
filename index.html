@@ -430,8 +430,7 @@
     </div>
     <div class="form-group">
       <label>Supervision Feedback</label>
-      <textarea id="supFeedback" rows="5">Lead by example to foster a respectful, cooperative, and positive team environment. Encourage open communication and mutual support among staff members. Address any conflict or inappropriate behaviour promptly and professionally.</textarea>
-      <div class="hint">Pre-filled with default text. Edit as needed.</div>
+      <textarea id="supFeedback" rows="5" placeholder="Supervision feedback..."></textarea>
     </div>
     <div class="form-group">
       <label>Line Managers&#8217; Goals for individual</label>
@@ -1620,8 +1619,15 @@ async function downloadSupervision() {
     xml = insertTextAfterHeading(xml, 'Weaknesses', weaknesses);
     xml = insertTextAfterHeading(xml, 'Your Well Being', wellBeing);
     xml = insertTextAfterHeading(xml, 'Goals achieved from last supervision', goalsAchieved);
-    xml = insertTextAfterHeading(xml, 'Supervision Feedback', feedback);
-    xml = insertTextAfterHeading(xml, 'Line Manager', managerGoals);
+    // Combine feedback and manager goals into one block
+    let feedbackCombined = feedback;
+    if (managerGoals) {
+      if (feedbackCombined) feedbackCombined += '
+
+';
+      feedbackCombined += managerGoals;
+    }
+    xml = insertTextAfterHeading(xml, 'Supervision Feedback', feedbackCombined);
 
     // Fill signature dates
     if (managerSigDate) {
