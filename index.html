@@ -1897,13 +1897,13 @@ async function downloadAppraisal() {
       rtf = insertRtfAfterQuestion(rtf, 'work-related ambitions', ambitions);
     }
     if (achievements) {
-      rtf = insertRtfAfterQuestion(rtf, 'main achievements', achievements);
+      rtf = insertRtfAfterQuestion(rtf, 'your performance and conduct, please record your comments', achievements);
     }
     if (training) {
-      rtf = insertRtfAfterQuestion(rtf, 'training/education', training);
+      rtf = insertRtfAfterQuestion(rtf, 'Recommendations for training and career development', training);
     }
     if (otherComments) {
-      rtf = insertRtfAfterQuestion(rtf, 'Any other comments', otherComments);
+      rtf = insertRtfAfterQuestion(rtf, 'further comments by the employee', otherComments);
     }
 
     // Fill signature dates
@@ -1945,29 +1945,18 @@ function insertRtfCellValue(rtf, label, value) {
   var labelIdx = rtf.indexOf(label);
   if (labelIdx === -1) return rtf;
   var pos = labelIdx + label.length;
-  // Find first \cell (end of label cell), skipping \cellx
-  var labelCellEnd = -1;
+  // Single-column table: find \cell after the label (skip \cellx)
   while (pos < rtf.length) {
     pos = rtf.indexOf('cell', pos);
-    if (pos === -1) break;
+    if (pos === -1) return rtf;
     var ch = rtf.charAt(pos + 4);
-    if (ch !== 'x' && ch !== 'X' && (ch < 'a' || ch > 'z') && (ch < 'A' || ch > 'Z')) { labelCellEnd = pos; break; }
+    if (ch !== 'x' && ch !== 'X' && (ch < 'a' || ch > 'z') && (ch < 'A' || ch > 'Z')) break;
     pos += 4;
   }
-  if (labelCellEnd === -1) return rtf;
-  // Find next \cell (end of value cell), skipping \cellx
-  pos = labelCellEnd + 5;
-  var valueCellEnd = -1;
-  while (pos < rtf.length) {
-    pos = rtf.indexOf('cell', pos);
-    if (pos === -1) break;
-    var ch2 = rtf.charAt(pos + 4);
-    if (ch2 !== 'x' && ch2 !== 'X' && (ch2 < 'a' || ch2 > 'z') && (ch2 < 'A' || ch2 > 'Z')) { valueCellEnd = pos; break; }
-    pos += 4;
-  }
-  if (valueCellEnd === -1) return rtf;
-  var rtfValue = rtfEscape(value);
-  rtf = rtf.substring(0, valueCellEnd) + ' ' + rtfValue + rtf.substring(valueCellEnd);
+  // pos points to 'c' of \cell, insert value before the backslash (pos-1)
+  var insertAt = pos - 1;
+  var rtfValue = ' ' + rtfEscape(value);
+  rtf = rtf.substring(0, insertAt) + rtfValue + rtf.substring(insertAt);
   return rtf;
 }
 
