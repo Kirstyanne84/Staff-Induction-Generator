@@ -2115,7 +2115,7 @@ table.d td.l{color:#0070C0;font-weight:bold;width:25%;background:#f5f8fc}
 <table class="d" style="margin-top:14pt"><tr><td class="l">Resident / Representative signature:</td><td style="height:25pt"></td><td class="l">Date:</td><td style="width:18%"></td></tr>
 <tr><td class="l">Staff signature:</td><td></td><td class="l">Date:</td><td></td></tr></table>
 </body></html>`;
-  acpDownloadFile(html, name + ' - ACP.doc');
+  acpDownloadFile(html, name + ' - ACP.docx');
 }
 
 // ===== DEMENTIA DOWNLOAD =====
@@ -2179,15 +2179,44 @@ table.d td.l{color:#0070C0;font-weight:bold;width:28%;background:#f5f8fc}
 <table class="d" style="margin-top:14pt"><tr><td class="l">Resident / Representative signature:</td><td style="height:25pt"></td><td class="l">Date:</td><td style="width:18%"></td></tr>
 <tr><td class="l">Staff signature:</td><td></td><td class="l">Date:</td><td></td></tr></table>
 </body></html>`;
-  acpDownloadFile(html, name + ' - Dementia ACP.doc');
+  acpDownloadFile(html, name + ' - Dementia ACP.docx');
 }
 
-function acpDownloadFile(html, filename) {
-  const blob = new Blob([html], { type: 'application/msword' });
+async function acpDownloadFile(html, filename) {
+  const zip = new JSZip();
+  zip.file('[Content_Types].xml',
+    '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+    '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">' +
+    '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>' +
+    '<Default Extension="xml" ContentType="application/xml"/>' +
+    '<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>' +
+    '<Override PartName="/word/afchunk.htm" ContentType="text/html"/>' +
+    '</Types>');
+  zip.file('_rels/.rels',
+    '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+    '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+    '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>' +
+    '</Relationships>');
+  zip.file('word/_rels/document.xml.rels',
+    '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+    '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+    '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/aFChunk" Target="afchunk.htm"/>' +
+    '</Relationships>');
+  zip.file('word/document.xml',
+    '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+    '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">' +
+    '<w:body><w:altChunk r:id="rId1"/></w:body></w:document>');
+  zip.file('word/afchunk.htm', html);
+  const blob = await zip.generateAsync({
+    type: 'blob',
+    mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    compression: 'DEFLATE'
+  });
+  const safeName = filename.replace(/[^a-zA-Z0-9 \-\.]/g, '');
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = filename.replace(/[^a-zA-Z0-9 \-\.]/g, '');
+  a.download = safeName;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -2596,7 +2625,7 @@ function tlContent(text) {
   return `<p style="${TL_KN}font-family:Arial,sans-serif;font-size:10pt;font-weight:normal;line-height:1.35;margin:2pt 0 4pt 12pt;">${text}</p>`;
 }
 
-function tlDownloadWord() {
+async function tlDownloadWord() {
   const residentName = document.getElementById('tlResidentName').value || '[Resident Name]';
   const roomNo = document.getElementById('tlRoomNo').value || '';
   const homeName = document.getElementById('tlHomeName').value || '';
@@ -2637,13 +2666,7 @@ body{font-family:Arial,sans-serif;font-size:10pt;color:#000;line-height:1.35;}
 ${body}
 </body></html>`;
 
-  const blob = new Blob([html], { type: 'application/msword' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `${residentName} - Traffic Lights.doc`;
-  a.click();
-  URL.revokeObjectURL(url);
+  await acpDownloadFile(html, `${residentName} - Traffic Lights.docx`);
 }
 
 function tlLoadExample() {
